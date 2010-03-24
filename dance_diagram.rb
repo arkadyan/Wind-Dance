@@ -2,12 +2,17 @@ require 'ruby-processing'
 
 class WindBarb
 	include Processing::Proxy
+	
+	attr_accessor :speed, :direction
 
-	def initialize
+	def initialize(speed, direction)
 		@center_x = width / 2
 		@center_y = height / 2
 		@dot_width = 3
 		@circle_width = 20
+		
+		@speed = speed
+		@direction = direction
 	end
   
 	def render
@@ -32,14 +37,28 @@ class DanceDiagram < Processing::App
 		
 		@center = width / 2
 		
-		@barb = WindBarb.new
+		@barbs = load_data
 	end
   
 	def draw
 		background 255
 		stroke 0
-		render_compass_points
+		# render_compass_points
 		# @barb.render
+	end
+	
+	
+	def load_data
+		barbs = load_strings("spws-data-flux-809-selected.csv").map do |line|
+			# values = line.split(',').map { |num| num.to_f }
+			values = line.split(',').map
+			WindBarb.new(values[0], values[1])
+		end
+		
+		barbs.each do |barb|
+			puts barb.speed
+			puts barb.direction
+		end
 	end
 	
 	
