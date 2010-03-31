@@ -1,13 +1,26 @@
 require 'ruby-processing'
 
+class Point
+	attr_accessor :x, :y
+	
+	def initialize(x, y)
+		@x = x
+		@y = y
+	end
+	
+	def set(x, y)
+		@x = x
+		@y = y
+	end
+end
+
 class WindBarb
 	include Processing::Proxy
 	
-	attr_accessor :speed, :direction, :x, :y
+	attr_accessor :speed, :direction, :pos
 
 	def initialize(speed, direction)
-		@x = width / 2
-		@y = height / 2
+		@pos = Point.new(width/2, height/2)
 		@dot_width = 3
 		@circle_width = 20
 		
@@ -65,16 +78,16 @@ class WindBarb
 	def render_calm
 		# Draw center dot
 		fill 0
-		ellipse @x, @y, @dot_width, @dot_width
+		ellipse @pos.x, @pos.y, @dot_width, @dot_width
 		
 		# Draw outer circle
 		no_fill
-		ellipse @x, @y, @circle_width, @circle_width
+		ellipse @pos.x, @pos.y, @circle_width, @circle_width
 	end
 	
 	def render_step
 		rect_mode CENTER
-		rect @x, @y, @circle_width, @circle_width
+		rect @pos.x, @pos.y, @circle_width, @circle_width
 	end
 end
 
@@ -84,8 +97,7 @@ class DanceDiagram < Processing::App
 		no_loop
 		
 		@center = width / 2
-		@current_x = @center
-		@current_y = @center
+		@current_pos = Point.new(@center, @center)
 		
 		@barbs = load_data
 	end
@@ -100,8 +112,8 @@ class DanceDiagram < Processing::App
 	
 	
 	def load_data
-		input_file = "spws-data-flux-809-selected.csv"
-		# input_file = "test3.csv"
+		# input_file = "spws-data-flux-809-selected.csv"
+		input_file = "test3.csv"
 		barbs = load_strings(input_file).map do |line|
 			# values = line.split(',').map { |num| num.to_f }
 			values = line.split(',').map
@@ -165,24 +177,34 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_step_barb(barb)
-		# step_multiplier = 5
-		step_multiplier = 20
+		step_multiplier = 5
+		# step_multiplier = 20
 		
-		new_x = @current_x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
-		new_y = @current_y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
+		new_x = @current_pos.x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
+		new_y = @current_pos.y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
 		puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
 		
-		barb.x = new_x
-		barb.y = new_y
+		barb.pos.x = new_x
+		barb.pos.y = new_y
 		
 		# Draw arrow from previous step to the new step
-		# line @current_x, @current_y, barb.x, barb.y
-		# triangle barb.x, barb.y
+		draw_arrow(@current_pos, barb.pos)
 				
-		@current_x = new_x
-		@current_y = new_y
+		@current_pos.set(new_x, new_y)
 		
 		barb.render
+	end
+	
+	def draw_arrow(from, to)
+		# Draw a line from one point to the next.
+		line from.x, from.y, to.x, to.y
+		
+		# line_vector = to_point - from_point
+		# line_length = length of line_vector
+		
+		# Calculate point at the base of the arrowhead
+		# t_point_on_line = n_width / (2 * (tanf(f_theta) / 2) * line_length)
+		# point_on_line = to_point + -t_point_on_line * line_vector
 	end
 	
 	def save_image
