@@ -112,8 +112,10 @@ class DanceDiagram < Processing::App
 	
 	
 	def load_data
-		# input_file = "spws-data-flux-809-selected.csv"
-		input_file = "test3.csv"
+		input_file = "spws-data-flux-809-selected.csv"
+		# input_file = "test3.csv"
+		# input_file = "test2.csv"
+		# input_file = "test1.csv"
 		barbs = load_strings(input_file).map do |line|
 			# values = line.split(',').map { |num| num.to_f }
 			values = line.split(',').map
@@ -123,12 +125,15 @@ class DanceDiagram < Processing::App
 	
 	
 	def render_compass_points
+		compass_stroke_color = 0
 		@cardinal_length = 10
 		@cardinal_weight = 4
 		@intermediate_length = 7
 		@intermediate_weight = 2
 		@minor_length = 4
 		@minor_weight = 1
+		
+		stroke compass_stroke_color
 		
 		# Cardinal directions
 		stroke_weight @cardinal_weight
@@ -163,6 +168,8 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_barbs
+		@barb_stroke_color = 0
+		
 		@barbs.each do |barb|
 			if barb.speed==0
 				render_still_barb(barb)
@@ -173,12 +180,13 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_still_barb(barb)
+		stroke @barb_stroke_color
 		barb.render
 	end
 	
 	def render_step_barb(barb)
-		step_multiplier = 5
-		# step_multiplier = 20
+		# step_multiplier = 5
+		step_multiplier = 60
 		
 		new_x = @current_pos.x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
 		new_y = @current_pos.y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
@@ -186,25 +194,62 @@ class DanceDiagram < Processing::App
 		
 		barb.pos.x = new_x
 		barb.pos.y = new_y
+
+		stroke @barb_stroke_color
+		barb.render
 		
 		# Draw arrow from previous step to the new step
 		draw_arrow(@current_pos, barb.pos)
 				
 		@current_pos.set(new_x, new_y)
-		
-		barb.render
 	end
 	
 	def draw_arrow(from, to)
+		arrow_stroke_color = 150
+		
+		stroke arrow_stroke_color
+		
+		puts "from = #{from.x}, #{from.y}"
+		puts "to = #{to.x}, #{to.y}"
+		
+		# Arrow head height and (center-to-edge) width
+		arrow_height = 10
+		arrow_width = 5
+		
 		# Draw a line from one point to the next.
 		line from.x, from.y, to.x, to.y
 		
-		# line_vector = to_point - from_point
-		# line_length = length of line_vector
+		# Initial trig calculations for the arrow head
+		adj = to.x - from.x
+		puts "adj = #{adj}"
+		opp = to.y - from.y
+		puts "opp = #{opp}"
+		angle = atan(adj/opp)
+		puts "angle = #{angle}"
 		
-		# Calculate point at the base of the arrowhead
-		# t_point_on_line = n_width / (2 * (tanf(f_theta) / 2) * line_length)
-		# point_on_line = to_point + -t_point_on_line * line_vector
+		# Draw the arrow head
+		push_matrix
+		translate from.x+adj, from.y+opp
+		if opp == 0 and adj > 0
+			rotate 3*PI/2
+		elsif opp == 0 and adj < 0
+			rotate PI/2
+		elsif adj == 0 and opp < 0
+			rotate PI
+		elsif adj == 0 and opp > 0
+			rotate 0
+		elsif angle < 0 and opp < 0
+			rotate PI - angle
+		elsif angle < 0 and opp > 0
+			rotate 2 * PI - angle
+		elsif opp < 0 and adj < 0
+			rotate PI - angle
+		else
+			rotate 2 * PI - angle
+		end
+		line 0, 0, arrow_width, -arrow_height
+		line 0, 0, -arrow_width, -arrow_height
+		pop_matrix
 	end
 	
 	def save_image
