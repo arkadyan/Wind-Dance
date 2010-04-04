@@ -33,35 +33,35 @@ class WindBarb
 		when 'E'
 			0
 		when 'ENE'
-			-PI/8
+			-Math::PI/8
 		when 'NE'
-			-PI/4
+			-Math::PI/4
 		when 'NNE'
-			-PI*3/8
+			-Math::PI*3/8
 		when 'N'
-			-PI/2
+			-Math::PI/2
 		when 'NNW'
-			-PI*5/8
+			-Math::PI*5/8
 		when 'NW'
-			-PI*3/4
+			-Math::PI*3/4
 		when 'WNW'
-			-PI*7/8
+			-Math::PI*7/8
 		when 'W'
-			-PI
+			-Math::PI
 		when 'WSW'
-			-PI*9/8
+			-Math::PI*9/8
 		when 'SW'
-			-PI*5/4
+			-Math::PI*5/4
 		when 'SSW'
-			-PI*11/8
+			-Math::PI*11/8
 		when 'S'
-			-PI*3/2
+			-Math::PI*3/2
 		when 'SSE'
-			-PI*13/8
+			-Math::PI*13/8
 		when 'SE'
-			-PI*7/4
+			-Math::PI*7/4
 		when 'ESE'
-			-PI*15/8
+			-Math::PI*15/8
 		else
 			0
 		end
@@ -86,8 +86,24 @@ class WindBarb
 	end
 	
 	def render_step
-		rect_mode CENTER
-		rect @pos.x, @pos.y, @circle_width, @circle_width
+		main_line_length = 30
+		full_flag_length = 20
+		flag_offset = 5
+		flag_angle = 3*Math::PI/8
+		
+		from_point = Point.new(@pos.x - (main_line_length/2)*Math.cos(direction_in_radians), pos.y - (main_line_length/2)*Math.sin(direction_in_radians))
+		to_point = Point.new(@pos.x + (main_line_length/2)*Math.cos(direction_in_radians), pos.y + (main_line_length/2)*Math.sin(direction_in_radians))
+		
+		line from_point.x, from_point.y, to_point.x, to_point.y
+
+		puts "speed=" + speed.to_s
+		
+		# Draw the 5 knots flag (for all step barbs)
+		push_matrix
+		translate to_point.x, to_point.y
+		rotate direction_in_radians + flag_angle
+		line 0, 0+flag_offset, full_flag_length/2, 0
+		pop_matrix
 	end
 end
 
@@ -137,16 +153,16 @@ class DanceDiagram < Processing::App
 		
 		# Cardinal directions
 		stroke_weight @cardinal_weight
-		render_opposite_compass_points @cardinal_length, PI/2
+		render_opposite_compass_points @cardinal_length, Math::PI/2
 		
 		# Intermediate directions
 		stroke_weight @intermediate_weight
-		render_opposite_compass_points @intermediate_length, PI/4
+		render_opposite_compass_points @intermediate_length, Math::PI/4
 		
 		# Minor directions
 		stroke_weight @minor_weight
-		render_opposite_compass_points @minor_length, PI/8
-		render_opposite_compass_points @minor_length, PI/8 + PI/4
+		render_opposite_compass_points @minor_length, Math::PI/8
+		render_opposite_compass_points @minor_length, Math::PI/8 + Math::PI/4
 		
 		stroke_weight 1
 	end
@@ -161,26 +177,28 @@ class DanceDiagram < Processing::App
 		
 		push_matrix
 		translate @center, @center
-		rotate PI/2+angle
+		rotate Math::PI/2+angle
 		line -@center, 0, -@center+length, 0
 		line @center-length, 0, @center, 0
 		pop_matrix
 	end
 	
 	def render_barbs
-		@barb_stroke_color = 0
+		barb_stroke_color = 0
+		barb_stroke_weight = 2
 		# step_multiplier = 5
 		step_multiplier = 60
 		
 		@barbs.each do |barb|
-			new_x = @current_pos.x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
-			new_y = @current_pos.y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
-			puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
+			new_x = @current_pos.x + barb.speed * step_multiplier * Math.cos(barb.direction_in_radians)
+			new_y = @current_pos.y + barb.speed * step_multiplier * Math.sin(barb.direction_in_radians)
+			# puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
 
 			barb.pos.x = new_x
 			barb.pos.y = new_y
 
-			stroke @barb_stroke_color
+			stroke barb_stroke_color
+			stroke_weight barb_stroke_weight
 			barb.render
 			
 			# Draw arrow from previous step to the new step
@@ -194,11 +212,25 @@ class DanceDiagram < Processing::App
 	
 	def draw_arrow(from, to)
 		arrow_stroke_color = 150
+		arrow_stroke_weight = 1
+		offset_length = 30
 		
 		stroke arrow_stroke_color
+		stroke_weight arrow_stroke_weight
 		
-		puts "from = #{from.x}, #{from.y}"
-		puts "to = #{to.x}, #{to.y}"
+		# puts "from = #{from.x}, #{from.y}"
+		# puts "to = #{to.x}, #{to.y}"
+		
+		# Initial trig calculations for the arrow head
+		adj = to.x - from.x
+		# puts "adj = #{adj}"
+		opp = to.y - from.y
+		# puts "opp = #{opp}"
+		angle = atan(adj/opp)
+		# puts "angle = #{angle}"
+		
+		line_from = Point.new(from.x+offset_length*Math.cos(angle), from.y-offset_length*Math.sin(angle))
+		line_to = Point.new(to.x-offset_length*Math.cos(angle), to.y+offset_length*Math.sin(angle))
 		
 		# Arrow head height and (center-to-edge) width
 		arrow_height = 10
@@ -206,43 +238,35 @@ class DanceDiagram < Processing::App
 		
 		# Draw a line from one point to the next.
 		line from.x, from.y, to.x, to.y
-		
-		# Initial trig calculations for the arrow head
-		adj = to.x - from.x
-		puts "adj = #{adj}"
-		opp = to.y - from.y
-		puts "opp = #{opp}"
-		angle = atan(adj/opp)
-		puts "angle = #{angle}"
+		# line line_from.x, line_from.y, line_to.x, line_to.y
 		
 		# Draw the arrow head
 		push_matrix
 		translate from.x+adj, from.y+opp
-		ration_amount = calculate_rotation(adj, opp, angle)
-		if opp == 0 and adj > 0
-			rotate 3*PI/2
-		elsif opp == 0 and adj < 0
-			rotate PI/2
-		elsif adj == 0 and opp < 0
-			rotate PI
-		elsif adj == 0 and opp > 0
-			rotate 0
-		elsif angle < 0 and opp < 0
-			rotate PI - angle
-		elsif angle < 0 and opp > 0
-			rotate 2 * PI - angle
-		elsif opp < 0 and adj < 0
-			rotate PI - angle
-		else
-			rotate 2 * PI - angle
-		end
+		rotate calculate_rotation(adj, opp, angle)
 		line 0, 0, arrow_width, -arrow_height
 		line 0, 0, -arrow_width, -arrow_height
 		pop_matrix
 	end
 	
 	def calculate_rotation(adj, opp, angle)
-		
+		if opp == 0 and adj > 0
+			3*Math::PI/2
+		elsif opp == 0 and adj < 0
+			Math::PI/2
+		elsif adj == 0 and opp < 0
+			Math::PI
+		elsif adj == 0 and opp > 0
+			0
+		elsif angle < 0 and opp < 0
+			Math::PI - angle
+		elsif angle < 0 and opp > 0
+			2 * Math::PI - angle
+		elsif opp < 0 and adj < 0
+			Math::PI - angle
+		else
+			2 * Math::PI - angle
+		end
 	end
 	
 	def save_image
