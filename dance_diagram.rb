@@ -169,39 +169,27 @@ class DanceDiagram < Processing::App
 	
 	def render_barbs
 		@barb_stroke_color = 0
-		
-		@barbs.each do |barb|
-			if barb.speed==0
-				render_still_barb(barb)
-			else
-				render_step_barb(barb)
-			end
-		end
-	end
-	
-	def render_still_barb(barb)
-		stroke @barb_stroke_color
-		barb.render
-	end
-	
-	def render_step_barb(barb)
 		# step_multiplier = 5
 		step_multiplier = 60
 		
-		new_x = @current_pos.x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
-		new_y = @current_pos.y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
-		puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
-		
-		barb.pos.x = new_x
-		barb.pos.y = new_y
+		@barbs.each do |barb|
+			new_x = @current_pos.x + barb.speed * step_multiplier * cos(barb.direction_in_radians)
+			new_y = @current_pos.y + barb.speed * step_multiplier * sin(barb.direction_in_radians)
+			puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
 
-		stroke @barb_stroke_color
-		barb.render
-		
-		# Draw arrow from previous step to the new step
-		draw_arrow(@current_pos, barb.pos)
-				
-		@current_pos.set(new_x, new_y)
+			barb.pos.x = new_x
+			barb.pos.y = new_y
+
+			stroke @barb_stroke_color
+			barb.render
+			
+			# Draw arrow from previous step to the new step
+			if barb.speed > 0
+				draw_arrow(@current_pos, barb.pos)
+			end
+
+			@current_pos.set(new_x, new_y)
+		end
 	end
 	
 	def draw_arrow(from, to)
@@ -230,6 +218,7 @@ class DanceDiagram < Processing::App
 		# Draw the arrow head
 		push_matrix
 		translate from.x+adj, from.y+opp
+		ration_amount = calculate_rotation(adj, opp, angle)
 		if opp == 0 and adj > 0
 			rotate 3*PI/2
 		elsif opp == 0 and adj < 0
@@ -250,6 +239,10 @@ class DanceDiagram < Processing::App
 		line 0, 0, arrow_width, -arrow_height
 		line 0, 0, -arrow_width, -arrow_height
 		pop_matrix
+	end
+	
+	def calculate_rotation(adj, opp, angle)
+		
 	end
 	
 	def save_image
