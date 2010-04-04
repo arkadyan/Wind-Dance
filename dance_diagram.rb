@@ -96,7 +96,7 @@ class WindBarb
 		
 		line from_point.x, from_point.y, to_point.x, to_point.y
 
-		puts "speed=" + speed.to_s
+		# puts "speed=" + speed.to_s
 		
 		# Draw the 5 knots flag (for all step barbs)
 		push_matrix
@@ -186,8 +186,10 @@ class DanceDiagram < Processing::App
 	def render_barbs
 		barb_stroke_color = 0
 		barb_stroke_weight = 2
-		# step_multiplier = 5
-		step_multiplier = 60
+		# step_multiplier = 6
+		# step_multiplier = 15
+		# step_multiplier = 60
+		step_multiplier = 100
 		
 		@barbs.each do |barb|
 			new_x = @current_pos.x + barb.speed * step_multiplier * Math.cos(barb.direction_in_radians)
@@ -226,23 +228,51 @@ class DanceDiagram < Processing::App
 		# puts "adj = #{adj}"
 		opp = to.y - from.y
 		# puts "opp = #{opp}"
-		angle = atan(adj/opp)
-		# puts "angle = #{angle}"
+		angle = Math.atan(opp/adj)
+ 		# puts "angle = #{angle}"
 		
-		line_from = Point.new(from.x+offset_length*Math.cos(angle), from.y-offset_length*Math.sin(angle))
-		line_to = Point.new(to.x-offset_length*Math.cos(angle), to.y+offset_length*Math.sin(angle))
+		if adj>0 and opp<0.001 and opp>-0.001
+			line_from = Point.new(from.x+offset_length, from.y)
+			line_to = Point.new(to.x-offset_length, to.y)
+		elsif adj<0 and opp<0.001 and opp>-0.001
+			line_from = Point.new(from.x-offset_length, from.y)
+			line_to = Point.new(to.x+offset_length, to.y)
+		elsif adj<0.001 and adj>-0.001 and opp<0
+			line_from = Point.new(from.x, from.y-offset_length)
+			line_to = Point.new(to.x, to.y+offset_length)
+		elsif adj<0.001 and adj>-0.001 and opp>0
+			line_from = Point.new(from.x, from.y+offset_length)
+			line_to = Point.new(to.x, to.y-offset_length)
+		elsif adj>0 and opp<0
+			line_from = Point.new(from.x+offset_length*(Math.cos(angle)).abs, from.y-offset_length*(Math.sin(angle)).abs)
+			line_to = Point.new(to.x-offset_length*(Math.cos(angle)).abs, to.y+offset_length*(Math.sin(angle)).abs)
+		elsif adj<0 and opp<0
+			line_from = Point.new(from.x-offset_length*Math.cos(angle), from.y-offset_length*(Math.sin(angle)).abs)
+			line_to = Point.new(to.x+offset_length*Math.cos(angle), to.y+offset_length*(Math.sin(angle)).abs)
+		elsif adj<0 and opp>0
+			line_from = Point.new(from.x-offset_length*Math.cos(angle), from.y+offset_length*(Math.sin(angle)).abs)
+			line_to = Point.new(to.x+offset_length*Math.cos(angle), to.y-offset_length*(Math.sin(angle)).abs)
+		elsif adj>0 and opp>0
+			line_from = Point.new(from.x+offset_length*Math.cos(angle), from.y+offset_length*(Math.sin(angle)).abs)
+			line_to = Point.new(to.x-offset_length*Math.cos(angle), to.y-offset_length*(Math.sin(angle)).abs)
+		else
+			puts "default arrow"
+			line_from = from
+			line_to = to
+		end
 		
 		# Arrow head height and (center-to-edge) width
 		arrow_height = 10
 		arrow_width = 5
 		
 		# Draw a line from one point to the next.
-		line from.x, from.y, to.x, to.y
-		# line line_from.x, line_from.y, line_to.x, line_to.y
+		# line from.x, from.y, to.x, to.y
+		line line_from.x, line_from.y, line_to.x, line_to.y
 		
 		# Draw the arrow head
 		push_matrix
-		translate from.x+adj, from.y+opp
+		# translate line_from.x+adj, line_from.y+opp
+		translate line_to.x, line_to.y
 		rotate calculate_rotation(adj, opp, angle)
 		line 0, 0, arrow_width, -arrow_height
 		line 0, 0, -arrow_width, -arrow_height
@@ -250,22 +280,22 @@ class DanceDiagram < Processing::App
 	end
 	
 	def calculate_rotation(adj, opp, angle)
-		if opp == 0 and adj > 0
+		if opp<0.001 and opp>-0.001 and adj>0
 			3*Math::PI/2
-		elsif opp == 0 and adj < 0
+		elsif opp<0.001 and opp>-0.001 and adj<0
 			Math::PI/2
-		elsif adj == 0 and opp < 0
+		elsif adj<0.001 and adj>-0.001 and opp<0
 			Math::PI
-		elsif adj == 0 and opp > 0
+		elsif adj<0.001 and adj>-0.001 and opp>0
 			0
 		elsif angle < 0 and opp < 0
-			Math::PI - angle
+			3*Math::PI/2 - angle.abs
 		elsif angle < 0 and opp > 0
-			2 * Math::PI - angle
+			Math::PI/2 - angle.abs
 		elsif opp < 0 and adj < 0
-			Math::PI - angle
+			Math::PI/2 + angle.abs
 		else
-			2 * Math::PI - angle
+			3*Math::PI/2 + angle.abs
 		end
 	end
 	
@@ -274,4 +304,6 @@ class DanceDiagram < Processing::App
 	end
 end
 
-DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
+# DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
+DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
+# DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
