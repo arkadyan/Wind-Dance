@@ -17,15 +17,16 @@ end
 class WindBarb
 	include Processing::Proxy
 	
-	attr_accessor :speed, :direction, :pos
+	attr_accessor :speed, :direction, :pos, :previous_barb
 
-	def initialize(speed, direction)
+	def initialize(speed, direction, previous_barb)
 		@pos = Point.new(width/2, height/2)
 		@dot_width = 3
 		@circle_width = 20
 		
 		@speed = speed
 		@direction = direction
+		@previous_barb = previous_barb
 	end
 	
 	def direction_in_radians
@@ -76,6 +77,16 @@ class WindBarb
 	end
 	
 	def render_calm
+		# Arrow head height and (center-to-edge) width
+		arrow_line_length = 30
+		arrow_head_height = 8
+		arrow_head_width = 4
+		arrow_stroke_color = 50
+		arrow_stroke_weight = 1
+		
+		stroke arrow_stroke_color
+		stroke_weight arrow_stroke_weight
+				
 		# Draw center dot
 		fill 0
 		ellipse @pos.x, @pos.y, @dot_width, @dot_width
@@ -83,6 +94,24 @@ class WindBarb
 		# Draw outer circle
 		no_fill
 		ellipse @pos.x, @pos.y, @circle_width, @circle_width
+		
+		
+		push_matrix
+		translate @pos.x, @pos.y
+		rotate 3*Math::PI/2 + direction_in_radians
+		
+		stroke arrow_stroke_color
+		
+		# Draw the arrow line
+		line 0, 0, 0, arrow_line_length
+		
+		# Draw the arrow head
+		fill arrow_stroke_color
+		triangle 0, arrow_line_length, -arrow_head_width, arrow_line_length-arrow_head_height, arrow_head_width, arrow_line_length-arrow_head_height
+		no_fill
+		# line 0, 0, arrow_head_width, -arrow_head_height
+		# line 0, 0, -arrow_head_width, -arrow_head_height
+		pop_matrix
 	end
 	
 	def render_step
@@ -128,14 +157,17 @@ class DanceDiagram < Processing::App
 	
 	
 	def load_data
-		input_file = "spws-data-flux-809-selected.csv"
+		# input_file = "spws-data-flux-809-selected.csv"
+		input_file = "test5.csv"
+		# input_file = "test4.csv"
 		# input_file = "test3.csv"
 		# input_file = "test2.csv"
 		# input_file = "test1.csv"
+		previous_barb = nil
 		barbs = load_strings(input_file).map do |line|
 			# values = line.split(',').map { |num| num.to_f }
 			values = line.split(',').map
-			WindBarb.new(values[0].to_f, values[1])
+			previous_barb = WindBarb.new(values[0].to_f, values[1], previous_barb)
 		end
 	end
 	
@@ -188,8 +220,11 @@ class DanceDiagram < Processing::App
 		barb_stroke_weight = 2
 		# step_multiplier = 6
 		# step_multiplier = 15
+		# step_multiplier = 40
 		# step_multiplier = 60
-		step_multiplier = 100
+		step_multiplier = 80
+		# step_multiplier = 100
+		move_from_last_step_distance = 50
 		
 		@barbs.each do |barb|
 			new_x = @current_pos.x + barb.speed * step_multiplier * Math.cos(barb.direction_in_radians)
@@ -198,6 +233,14 @@ class DanceDiagram < Processing::App
 
 			barb.pos.x = new_x
 			barb.pos.y = new_y
+			
+			# If the last barb was a step, move away from it in the same direction
+			if barb.speed==0 and barb.previous_barb and barb.previous_barb.speed > 0
+				barb.pos.x -= move_from_last_step_distance*Math.cos((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
+				# barb.pos.x += move_from_last_step_distance*Math.cos((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
+				barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
+				# barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
+			end
 
 			stroke barb_stroke_color
 			stroke_weight barb_stroke_weight
@@ -208,7 +251,7 @@ class DanceDiagram < Processing::App
 				draw_arrow(@current_pos, barb.pos)
 			end
 
-			@current_pos.set(new_x, new_y)
+			@current_pos.set(barb.pos.x, barb.pos.y)
 		end
 	end
 	
