@@ -114,7 +114,6 @@ class WindBarb
 		
 		line from_point.x, from_point.y, to_point.x, to_point.y
 
-		puts "starting with speed=#{speed}"
 		render_barbs(from_point, main_line_length, @speed)
 	end
 	
@@ -125,17 +124,13 @@ class WindBarb
 		flag_angle = 3*Math::PI/8
 		to_point = Point.new(from_point.x+length*Math.cos(direction_in_radians), from_point.y+length*Math.sin(direction_in_radians))
 		
-		puts "speed=#{speed}"
-		
 		# If there is greater than 1 left for the speed 
 		# draw a full flag and recurse
 		# if there is less than 1, draw a half flag.
 		if speed/2 > 1
-			puts "if remainder=#{speed%2}"
 			render_barbs(from_point, length-flag_offset, speed%2)
 			flag_length = full_flag_length
 		else
-			puts "else remainder=#{speed%2}"
 			flag_length = full_flag_length * 0.5
 		end
 		
