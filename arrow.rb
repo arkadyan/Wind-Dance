@@ -95,6 +95,7 @@ class Arrow
 	def render_to_calm_barb
 		starting_distance_out = 13
 		distance_out_offset = 3
+		middle_distance_bump = 1.2
 		
 		distance_out = starting_distance_out + num_previous_calm_steps(@to_barb)*distance_out_offset
 		
@@ -109,19 +110,28 @@ class Arrow
 		
 		from_point = Point.new(distance_out*Math.cos(from_direction)+@to_barb.pos.x, distance_out*Math.sin(from_direction)+@to_barb.pos.y)
 		to_point = Point.new(distance_out*Math.cos(to_direction)+@to_barb.pos.x, distance_out*Math.sin(to_direction)+@to_barb.pos.y)
-		middle_point_1 = Point.new(distance_out*Math.cos(middle_direction_1)+@to_barb.pos.x, distance_out*Math.sin(middle_direction_1)+@to_barb.pos.y)		
-		middle_point_2 = Point.new(distance_out*Math.cos(middle_direction_2)+@to_barb.pos.x, distance_out*Math.sin(middle_direction_2)+@to_barb.pos.y)		
+		middle_point_1 = Point.new((distance_out*middle_distance_bump)*Math.cos(middle_direction_1)+@to_barb.pos.x, (distance_out*middle_distance_bump)*Math.sin(middle_direction_1)+@to_barb.pos.y)		
+		middle_point_2 = Point.new((distance_out*middle_distance_bump)*Math.cos(middle_direction_2)+@to_barb.pos.x, (distance_out*middle_distance_bump)*Math.sin(middle_direction_2)+@to_barb.pos.y)		
 		
 		
 		bezier from_point.x, from_point.y, middle_point_1.x, middle_point_1.y, middle_point_2.x, middle_point_2.y, to_point.x, to_point.y
 		
 		# Draw the arrow head
-		push_matrix
-		translate to_point.x, to_point.y
-		rotate to_direction
-		# line 0, 0, @arrow_width, -@arrow_height
-		# line 0, 0, -@arrow_width, -@arrow_height
-		pop_matrix
+		
+		# Get the location of the final point
+		arrow_x = bezierPoint(from_point.x, middle_point_1.x, middle_point_2.x, to_point.x, 1)
+		arrow_y = bezierPoint(from_point.y, middle_point_1.y, middle_point_2.y, to_point.y, 1)
+		
+		# Get the tangent points
+		arrow_tan_x = bezierTangent(from_point.x, middle_point_1.x, middle_point_2.x, to_point.x, 1)
+		arrow_tan_y = bezierTangent(from_point.y, middle_point_1.y, middle_point_2.y, to_point.y, 1)
+		
+		# Calculate an angle from the tangent points
+		arrow_angle = Math.atan2(arrow_tan_y, arrow_tan_x)
+		arrow_angle += Math::PI
+		
+		# Draw the arrow head
+		line(arrow_x, arrow_y, Math.cos(arrow_angle)*10 + arrow_x, Math.sin(arrow_angle)*10 + arrow_y);
 	end
 	
 	def calculate_rotation(adj, opp, angle)

@@ -25,6 +25,7 @@ class DanceDiagram < Processing::App
 	
 	def load_data
 		input_file = "spws-data-flux-809-selected.csv"
+		# input_file = "test6.csv"
 		# input_file = "test5.csv"
 		# input_file = "test4.csv"
 		# input_file = "test3.csv"
