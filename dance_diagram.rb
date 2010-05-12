@@ -93,6 +93,9 @@ class DanceDiagram < Processing::App
 		# step_multiplier = 100
 		move_from_last_step_distance = 50
 		
+		# Render the starting terminal circle
+		render_terminal_circle(@barbs.first.pos)
+		
 		@barbs.each do |barb|
 			new_x = @current_pos.x + barb.speed * step_multiplier * Math.cos(barb.direction_in_radians)
 			new_y = @current_pos.y + barb.speed * step_multiplier * Math.sin(barb.direction_in_radians)
@@ -108,6 +111,9 @@ class DanceDiagram < Processing::App
 				barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
 				# barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
 			end
+			
+			# Render the final terminal circle
+			render_terminal_circle(@barbs.last.pos)
 
 			stroke barb_stroke_color
 			stroke_weight barb_stroke_weight
@@ -118,6 +124,17 @@ class DanceDiagram < Processing::App
 
 			@current_pos.set(barb.pos.x, barb.pos.y)
 		end
+	end
+	
+	def render_terminal_circle(pos)
+		terminal_circle_width = 15
+		terminal_circle_weight = 1
+		terminal_circle_color = 50
+		
+		stroke_weight terminal_circle_weight
+		stroke terminal_circle_color
+		
+		ellipse pos.x, pos.y, terminal_circle_width, terminal_circle_width
 	end
 	
 	def save_image

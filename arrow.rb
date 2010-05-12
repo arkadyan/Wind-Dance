@@ -96,9 +96,7 @@ class Arrow
 		starting_distance_out = 13
 		distance_out_offset = 3
 		
-		puts "num_previous_calm_steps(@to_barb) = #{num_previous_calm_steps(@to_barb)}"
 		distance_out = starting_distance_out + num_previous_calm_steps(@to_barb)*distance_out_offset
-		puts "distance_out = #{distance_out}"
 		
 		stroke @arrow_stroke_color
 		stroke_weight @arrow_stroke_weight
@@ -147,17 +145,14 @@ class Arrow
 	end
 	
 	def num_previous_calm_steps(current_barb)
-		puts "enteringc num_previous_calm_steps"
 		previous_calm_steps = 0
 		previous_barb = current_barb.previous_barb
 		
 		if previous_barb && previous_barb.speed==0
-			puts "inside if"
 			previous_calm_steps += 1
 			previous_calm_steps += num_previous_calm_steps(previous_barb)
 		end
 		
-		puts "returning previous_calm_steps = #{previous_calm_steps}"
 		previous_calm_steps
 	end
 end
