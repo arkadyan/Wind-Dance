@@ -5,6 +5,30 @@ require 'arrow'
 
 
 class DanceDiagram < Processing::App
+	
+	TERMINAL_CIRCLE_WIDTH = 15
+	TERMINAL_CIRCLE_WEIGHT = 1
+	TERMINAL_CIRCLE_COLOR = 50
+	
+	COMPASS_STROKE_COLOR = 0
+	CARDINAL_LENGTH = 10
+	CARDINAL_WEIGHT = 4
+	INTERMEDIATE_LENGTH = 7
+	INTERMEDIATE_WEIGHT = 2
+	MINOR_LENGTH = 4
+	MINOR_WEIGHT = 1
+	
+	BARB_STROKE_COLOR = 0
+	BARB_STROKE_WEIGHT = 2
+	# STEP_MULTIPLIER = 6
+	# STEP_MULTIPLIER = 15
+	STEP_MULTIPLIER = 40
+	# STEP_MULTIPLIER = 60
+	# STEP_MULTIPLIER = 80
+	# STEP_MULTIPLIER = 100
+	MOVE_FROM_LAST_STEP_DISTANCE = 50
+	
+	
 	def setup
 		no_loop
 		
@@ -41,28 +65,20 @@ class DanceDiagram < Processing::App
 	
 	
 	def render_compass_points
-		compass_stroke_color = 0
-		@cardinal_length = 10
-		@cardinal_weight = 4
-		@intermediate_length = 7
-		@intermediate_weight = 2
-		@minor_length = 4
-		@minor_weight = 1
-		
-		stroke compass_stroke_color
+		stroke COMPASS_STROKE_COLOR
 		
 		# Cardinal directions
-		stroke_weight @cardinal_weight
-		render_opposite_compass_points @cardinal_length, Math::PI/2
+		stroke_weight CARDINAL_WEIGHT
+		render_opposite_compass_points CARDINAL_LENGTH, Math::PI/2
 		
 		# Intermediate directions
-		stroke_weight @intermediate_weight
-		render_opposite_compass_points @intermediate_length, Math::PI/4
+		stroke_weight INTERMEDIATE_WEIGHT
+		render_opposite_compass_points INTERMEDIATE_LENGTH, Math::PI/4
 		
 		# Minor directions
-		stroke_weight @minor_weight
-		render_opposite_compass_points @minor_length, Math::PI/8
-		render_opposite_compass_points @minor_length, Math::PI/8 + Math::PI/4
+		stroke_weight MINOR_WEIGHT
+		render_opposite_compass_points MINOR_LENGTH, Math::PI/8
+		render_opposite_compass_points MINOR_LENGTH, Math::PI/8 + Math::PI/4
 		
 		stroke_weight 1
 	end
@@ -84,22 +100,12 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_barbs
-		barb_stroke_color = 0
-		barb_stroke_weight = 2
-		# step_multiplier = 6
-		# step_multiplier = 15
-		step_multiplier = 40
-		# step_multiplier = 60
-		# step_multiplier = 80
-		# step_multiplier = 100
-		move_from_last_step_distance = 50
-		
 		# Render the starting terminal circle
 		render_terminal_circle(@barbs.first.pos)
 		
 		@barbs.each do |barb|
-			new_x = @current_pos.x + barb.speed * step_multiplier * Math.cos(barb.direction_in_radians)
-			new_y = @current_pos.y + barb.speed * step_multiplier * Math.sin(barb.direction_in_radians)
+			new_x = @current_pos.x + barb.speed * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
+			new_y = @current_pos.y + barb.speed * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
 			# puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
 
 			barb.pos.x = new_x
@@ -107,17 +113,17 @@ class DanceDiagram < Processing::App
 			
 			# If the last barb was a step, move away from it in the same direction
 			if barb.speed==0 and barb.previous_barb and barb.previous_barb.speed > 0
-				barb.pos.x -= move_from_last_step_distance*Math.cos((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
-				# barb.pos.x += move_from_last_step_distance*Math.cos((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
-				barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
-				# barb.pos.y += move_from_last_step_distance*Math.sin((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
+				barb.pos.x -= MOVE_FROM_LAST_STEP_DISTANCE*Math.cos((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
+				# barb.pos.x += MOVE_FROM_LAST_STEP_DISTANCE*Math.cos((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
+				barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
+				# barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
 			end
 			
 			# Render the final terminal circle
 			render_terminal_circle(@barbs.last.pos)
 
-			stroke barb_stroke_color
-			stroke_weight barb_stroke_weight
+			stroke BARB_STROKE_COLOR
+			stroke_weight BARB_STROKE_WEIGHT
 			barb.render
 			
 			# Draw arrow from previous step to the new step
@@ -128,14 +134,10 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_terminal_circle(pos)
-		terminal_circle_width = 15
-		terminal_circle_weight = 1
-		terminal_circle_color = 50
+		stroke_weight TERMINAL_CIRCLE_WEIGHT
+		stroke TERMINAL_CIRCLE_COLOR
 		
-		stroke_weight terminal_circle_weight
-		stroke terminal_circle_color
-		
-		ellipse pos.x, pos.y, terminal_circle_width, terminal_circle_width
+		ellipse pos.x, pos.y, TERMINAL_CIRCLE_WIDTH, TERMINAL_CIRCLE_WIDTH
 	end
 	
 	def save_image
