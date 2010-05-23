@@ -6,14 +6,21 @@ require 'point'
 class Arrow
 	include Processing::Proxy
 	
+	ARROW_STROKE_COLOR = 150
+	ARROW_STROKE_WEIGHT = 1
+
+	# Arrow head height and (center-to-edge) width
+	ARROW_HEIGHT = 10
+	ARROW_WIDTH = 5
+	
+	OFFSET_LENGTH = 30
+	
+	STARTING_DISTANCE_OUT = 13
+	DISTANCE_OUT_OFFSET = 3
+	MIDDLE_DISTANCE_BUMP = 1.2
+	
+	
 	def initialize(to_barb)
-		@arrow_stroke_color = 150
-		@arrow_stroke_weight = 1
-		
-		# Arrow head height and (center-to-edge) width
-		@arrow_height = 10
-		@arrow_width = 5
-		
 		@to_barb = to_barb
 		@from_barb = to_barb.previous_barb
 	end
@@ -35,10 +42,8 @@ class Arrow
 	private
 	
 	def render_to_step_barb
-		offset_length = 30
-		
-		stroke @arrow_stroke_color
-		stroke_weight @arrow_stroke_weight
+		stroke ARROW_STROKE_COLOR
+		stroke_weight ARROW_STROKE_WEIGHT
 		
 		# Initial trig calculations for the arrow head
 		adj = @to_barb.pos.x - @from_barb.pos.x
@@ -49,29 +54,29 @@ class Arrow
  		# puts "angle = #{angle}"
 		
 		if adj>0 and opp<0.001 and opp>-0.001
-			line_from = Point.new(@from_barb.pos.x+offset_length, @from_barb.pos.y)
-			line_to = Point.new(@to_barb.pos.x-offset_length, @to_barb.pos.y)
+			line_from = Point.new(@from_barb.pos.x+OFFSET_LENGTH, @from_barb.pos.y)
+			line_to = Point.new(@to_barb.pos.x-OFFSET_LENGTH, @to_barb.pos.y)
 		elsif adj<0 and opp<0.001 and opp>-0.001
-			line_from = Point.new(@from_barb.pos.x-offset_length, @from_barb.pos.y)
-			line_to = Point.new(@to_barb.pos.x+offset_length, @to_barb.pos.y)
+			line_from = Point.new(@from_barb.pos.x-OFFSET_LENGTH, @from_barb.pos.y)
+			line_to = Point.new(@to_barb.pos.x+OFFSET_LENGTH, @to_barb.pos.y)
 		elsif adj<0.001 and adj>-0.001 and opp<0
-			line_from = Point.new(@from_barb.pos.x, @from_barb.pos.y-offset_length)
-			line_to = Point.new(@to_barb.pos.x, @to_barb.pos.y+offset_length)
+			line_from = Point.new(@from_barb.pos.x, @from_barb.pos.y-OFFSET_LENGTH)
+			line_to = Point.new(@to_barb.pos.x, @to_barb.pos.y+OFFSET_LENGTH)
 		elsif adj<0.001 and adj>-0.001 and opp>0
-			line_from = Point.new(@from_barb.pos.x, @from_barb.pos.y+offset_length)
-			line_to = Point.new(@to_barb.pos.x, @to_barb.pos.y-offset_length)
+			line_from = Point.new(@from_barb.pos.x, @from_barb.pos.y+OFFSET_LENGTH)
+			line_to = Point.new(@to_barb.pos.x, @to_barb.pos.y-OFFSET_LENGTH)
 		elsif adj>0 and opp<0
-			line_from = Point.new(@from_barb.pos.x+offset_length*(Math.cos(angle)).abs, @from_barb.pos.y-offset_length*(Math.sin(angle)).abs)
-			line_to = Point.new(@to_barb.pos.x-offset_length*(Math.cos(angle)).abs, @to_barb.pos.y+offset_length*(Math.sin(angle)).abs)
+			line_from = Point.new(@from_barb.pos.x+OFFSET_LENGTH*(Math.cos(angle)).abs, @from_barb.pos.y-OFFSET_LENGTH*(Math.sin(angle)).abs)
+			line_to = Point.new(@to_barb.pos.x-OFFSET_LENGTH*(Math.cos(angle)).abs, @to_barb.pos.y+OFFSET_LENGTH*(Math.sin(angle)).abs)
 		elsif adj<0 and opp<0
-			line_from = Point.new(@from_barb.pos.x-offset_length*Math.cos(angle), @from_barb.pos.y-offset_length*(Math.sin(angle)).abs)
-			line_to = Point.new(@to_barb.pos.x+offset_length*Math.cos(angle), @to_barb.pos.y+offset_length*(Math.sin(angle)).abs)
+			line_from = Point.new(@from_barb.pos.x-OFFSET_LENGTH*Math.cos(angle), @from_barb.pos.y-OFFSET_LENGTH*(Math.sin(angle)).abs)
+			line_to = Point.new(@to_barb.pos.x+OFFSET_LENGTH*Math.cos(angle), @to_barb.pos.y+OFFSET_LENGTH*(Math.sin(angle)).abs)
 		elsif adj<0 and opp>0
-			line_from = Point.new(@from_barb.pos.x-offset_length*Math.cos(angle), @from_barb.pos.y+offset_length*(Math.sin(angle)).abs)
-			line_to = Point.new(@to_barb.pos.x+offset_length*Math.cos(angle), @to_barb.pos.y-offset_length*(Math.sin(angle)).abs)
+			line_from = Point.new(@from_barb.pos.x-OFFSET_LENGTH*Math.cos(angle), @from_barb.pos.y+OFFSET_LENGTH*(Math.sin(angle)).abs)
+			line_to = Point.new(@to_barb.pos.x+OFFSET_LENGTH*Math.cos(angle), @to_barb.pos.y-OFFSET_LENGTH*(Math.sin(angle)).abs)
 		elsif adj>0 and opp>0
-			line_from = Point.new(@from_barb.pos.x+offset_length*Math.cos(angle), @from_barb.pos.y+offset_length*(Math.sin(angle)).abs)
-			line_to = Point.new(@to_barb.pos.x-offset_length*Math.cos(angle), @to_barb.pos.y-offset_length*(Math.sin(angle)).abs)
+			line_from = Point.new(@from_barb.pos.x+OFFSET_LENGTH*Math.cos(angle), @from_barb.pos.y+OFFSET_LENGTH*(Math.sin(angle)).abs)
+			line_to = Point.new(@to_barb.pos.x-OFFSET_LENGTH*Math.cos(angle), @to_barb.pos.y-OFFSET_LENGTH*(Math.sin(angle)).abs)
 		else
 			puts "default arrow"
 			line_from = @from_barb.pos
@@ -87,20 +92,16 @@ class Arrow
 		# translate line_from.x+adj, line_from.y+opp
 		translate line_to.x, line_to.y
 		rotate calculate_rotation(adj, opp, angle)
-		line 0, 0, @arrow_width, -@arrow_height
-		line 0, 0, -@arrow_width, -@arrow_height
+		line 0, 0, ARROW_WIDTH, -ARROW_HEIGHT
+		line 0, 0, -ARROW_WIDTH, -ARROW_HEIGHT
 		pop_matrix
 	end
 	
 	def render_to_calm_barb
-		starting_distance_out = 13
-		distance_out_offset = 3
-		middle_distance_bump = 1.2
+		distance_out = STARTING_DISTANCE_OUT + num_previous_calm_steps(@to_barb)*DISTANCE_OUT_OFFSET
 		
-		distance_out = starting_distance_out + num_previous_calm_steps(@to_barb)*distance_out_offset
-		
-		stroke @arrow_stroke_color
-		stroke_weight @arrow_stroke_weight
+		stroke ARROW_STROKE_COLOR
+		stroke_weight ARROW_STROKE_WEIGHT
 
 		from_direction = @from_barb.direction_in_radians
 		to_direction = @to_barb.direction_in_radians
@@ -110,8 +111,8 @@ class Arrow
 		
 		from_point = Point.new(distance_out*Math.cos(from_direction)+@to_barb.pos.x, distance_out*Math.sin(from_direction)+@to_barb.pos.y)
 		to_point = Point.new(distance_out*Math.cos(to_direction)+@to_barb.pos.x, distance_out*Math.sin(to_direction)+@to_barb.pos.y)
-		middle_point_1 = Point.new((distance_out*middle_distance_bump)*Math.cos(middle_direction_1)+@to_barb.pos.x, (distance_out*middle_distance_bump)*Math.sin(middle_direction_1)+@to_barb.pos.y)		
-		middle_point_2 = Point.new((distance_out*middle_distance_bump)*Math.cos(middle_direction_2)+@to_barb.pos.x, (distance_out*middle_distance_bump)*Math.sin(middle_direction_2)+@to_barb.pos.y)		
+		middle_point_1 = Point.new((distance_out*MIDDLE_DISTANCE_BUMP)*Math.cos(middle_direction_1)+@to_barb.pos.x, (distance_out*MIDDLE_DISTANCE_BUMP)*Math.sin(middle_direction_1)+@to_barb.pos.y)		
+		middle_point_2 = Point.new((distance_out*MIDDLE_DISTANCE_BUMP)*Math.cos(middle_direction_2)+@to_barb.pos.x, (distance_out*MIDDLE_DISTANCE_BUMP)*Math.sin(middle_direction_2)+@to_barb.pos.y)		
 		
 		
 		bezier from_point.x, from_point.y, middle_point_1.x, middle_point_1.y, middle_point_2.x, middle_point_2.y, to_point.x, to_point.y
