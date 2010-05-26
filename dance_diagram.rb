@@ -106,7 +106,6 @@ class DanceDiagram < Processing::App
 		@barbs.each do |barb|
 			new_x = @current_pos.x + barb.speed * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
 			new_y = @current_pos.y + barb.speed * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
-			# puts barb.direction_in_radians.to_s + ' * ' + barb.speed.to_s + ' = ' + new_x.to_s + ', ' + new_y.to_s
 
 			barb.pos.x = new_x
 			barb.pos.y = new_y
@@ -114,9 +113,7 @@ class DanceDiagram < Processing::App
 			# If the last barb was a step, move away from it in the same direction
 			if barb.speed==0 and barb.previous_barb and barb.previous_barb.speed > 0
 				barb.pos.x -= MOVE_FROM_LAST_STEP_DISTANCE*Math.cos((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
-				# barb.pos.x += MOVE_FROM_LAST_STEP_DISTANCE*Math.cos((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
 				barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
-				# barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI/2+barb.previous_barb.direction_in_radians).abs)
 			end
 			
 			# Render the final terminal circle

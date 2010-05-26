@@ -47,11 +47,8 @@ class Arrow
 		
 		# Initial trig calculations for the arrow head
 		adj = @to_barb.pos.x - @from_barb.pos.x
-		# puts "adj = #{adj}"
 		opp = @to_barb.pos.y - @from_barb.pos.y
-		# puts "opp = #{opp}"
 		angle = Math.atan(opp/adj)
- 		# puts "angle = #{angle}"
 		
 		if adj>0 and opp<0.001 and opp>-0.001
 			line_from = Point.new(@from_barb.pos.x+OFFSET_LENGTH, @from_barb.pos.y)
@@ -84,12 +81,10 @@ class Arrow
 		end
 		
 		# Draw a line from one point to the next.
-		# line from.x, from.y, to.x, to.y
 		line line_from.x, line_from.y, line_to.x, line_to.y
 		
 		# Draw the arrow head
 		push_matrix
-		# translate line_from.x+adj, line_from.y+opp
 		translate line_to.x, line_to.y
 		rotate calculate_rotation(adj, opp, angle)
 		line 0, 0, ARROW_WIDTH, -ARROW_HEIGHT
