@@ -89,7 +89,6 @@ class WindBarb
 		no_fill
 		ellipse @pos.x, @pos.y, CIRCLE_WIDTH, CIRCLE_WIDTH
 		
-		
 		push_matrix
 		translate @pos.x, @pos.y
 		rotate 3*Math::PI/2 + direction_in_radians
@@ -100,17 +99,12 @@ class WindBarb
 		line 0, 0, 0, ARROW_LINE_LENGTH
 		
 		# Draw the arrow head
-		fill ARROW_STROKE_COLOR
-		triangle 0, ARROW_LINE_LENGTH, -ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT, ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
-		no_fill
-		# line 0, 0, ARROW_HEAD_WIDTH, -ARROW_HEAD_HEIGHT
-		# line 0, 0, -ARROW_HEAD_WIDTH, -ARROW_HEAD_HEIGHT
+		line 0, ARROW_LINE_LENGTH, -ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
+		line 0, ARROW_LINE_LENGTH, ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
 		pop_matrix
 	end
 	
 	def render_step
-		
-
 		from_point = Point.new(@pos.x - (MAIN_LINE_LENGTH/2)*Math.cos(direction_in_radians), pos.y - (MAIN_LINE_LENGTH/2)*Math.sin(direction_in_radians))
 		# to_point = Point.new(@pos.x + (MAIN_LINE_LENGTH/2)*Math.cos(direction_in_radians), pos.y + (MAIN_LINE_LENGTH/2)*Math.sin(direction_in_radians))
 		to_point = Point.new(from_point.x+MAIN_LINE_LENGTH*Math.cos(direction_in_radians), from_point.y+MAIN_LINE_LENGTH*Math.sin(direction_in_radians))
