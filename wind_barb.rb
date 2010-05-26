@@ -7,6 +7,9 @@ class WindBarb
 	
 	attr_accessor :speed, :direction, :pos, :previous_barb
 	
+	BARB_STROKE_COLOR = 0
+	BARB_STROKE_WEIGHT = 2
+
 	MAIN_LINE_LENGTH = 30
 	DOT_WIDTH = 3
 	CIRCLE_WIDTH = 20
@@ -93,7 +96,9 @@ class WindBarb
 		translate @pos.x, @pos.y
 		rotate 3*Math::PI/2 + direction_in_radians
 		
-		stroke ARROW_STROKE_COLOR
+		# Draw the barb arrow
+		stroke BARB_STROKE_COLOR
+		stroke_weight BARB_STROKE_WEIGHT
 		
 		# Draw the arrow line
 		line 0, 0, 0, ARROW_LINE_LENGTH
@@ -105,6 +110,9 @@ class WindBarb
 	end
 	
 	def render_step
+		stroke BARB_STROKE_COLOR
+		stroke_weight BARB_STROKE_WEIGHT
+		
 		from_point = Point.new(@pos.x - (MAIN_LINE_LENGTH/2)*Math.cos(direction_in_radians), pos.y - (MAIN_LINE_LENGTH/2)*Math.sin(direction_in_radians))
 		to_point = Point.new(from_point.x+MAIN_LINE_LENGTH*Math.cos(direction_in_radians), from_point.y+MAIN_LINE_LENGTH*Math.sin(direction_in_radians))
 		

@@ -18,8 +18,6 @@ class DanceDiagram < Processing::App
 	MINOR_LENGTH = 4
 	MINOR_WEIGHT = 1
 	
-	BARB_STROKE_COLOR = 0
-	BARB_STROKE_WEIGHT = 2
 	# STEP_MULTIPLIER = 6
 	# STEP_MULTIPLIER = 15
 	STEP_MULTIPLIER = 40
@@ -119,8 +117,6 @@ class DanceDiagram < Processing::App
 			# Render the final terminal circle
 			render_terminal_circle(@barbs.last.pos)
 
-			stroke BARB_STROKE_COLOR
-			stroke_weight BARB_STROKE_WEIGHT
 			barb.render
 			
 			# Draw arrow from previous step to the new step
