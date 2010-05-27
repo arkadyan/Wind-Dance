@@ -100,9 +100,14 @@ class Arrow
 
 		from_direction = @from_barb.direction_in_radians
 		to_direction = @to_barb.direction_in_radians
-		middle_direction_1 = from_direction+(to_direction-from_direction)/3
-		middle_direction_2 = from_direction+(to_direction-from_direction)*2/3
-		
+
+		if (to_direction-from_direction).abs>Math::PI
+			middle_direction_1 = from_direction+(from_direction-to_direction)/9
+			middle_direction_2 = from_direction+(from_direction-to_direction)*2/9
+		else
+			middle_direction_1 = from_direction+(to_direction-from_direction)/3
+			middle_direction_2 = from_direction+(to_direction-from_direction)*2/3
+		end
 		
 		from_point = Point.new(distance_out*Math.cos(from_direction)+@to_barb.pos.x, distance_out*Math.sin(from_direction)+@to_barb.pos.y)
 		to_point = Point.new(distance_out*Math.cos(to_direction)+@to_barb.pos.x, distance_out*Math.sin(to_direction)+@to_barb.pos.y)
@@ -112,6 +117,7 @@ class Arrow
 		
 		bezier from_point.x, from_point.y, middle_point_1.x, middle_point_1.y, middle_point_2.x, middle_point_2.y, to_point.x, to_point.y
 		
+
 		# Draw the arrow head
 		
 		# Get the location of the final point
