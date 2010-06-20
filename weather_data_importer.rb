@@ -37,7 +37,8 @@ module WeatherDataImporter
 					:wind_speed => readings[WIND_SPEED], :wind_direction => readings[WIND_DIRECTION]}
 			end
 		end
-		get_first_reading(hour_readings)
+		# get_first_reading(hour_readings)
+		get_random_reading(hour_readings)
 	end
 	
 	
@@ -47,8 +48,8 @@ module WeatherDataImporter
 		readings.first
 	end
 	
-	def get_random_reading()
-		
+	def get_random_reading(readings)
+		readings[rand(readings.length)]
 	end
 	
 end
