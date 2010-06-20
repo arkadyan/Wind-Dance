@@ -1,4 +1,6 @@
 require 'ruby-processing'
+# load 'weather_data_importer.rb'
+require 'weather_data_importer'
 require 'point'
 require 'wind_barb'
 require 'arrow'
@@ -6,6 +8,9 @@ require 'arrow'
 
 class DanceDiagram < Processing::App
 	
+	include WeatherDataImporter
+	
+
 	TERMINAL_CIRCLE_WIDTH = 15
 	TERMINAL_CIRCLE_WEIGHT = 1
 	TERMINAL_CIRCLE_COLOR = 50
@@ -55,11 +60,22 @@ class DanceDiagram < Processing::App
 		# input_file = "test3.csv"
 		# input_file = "test2.csv"
 		# input_file = "test1.csv"
+		
 		previous_barb = nil
-		barbs = load_strings(input_file).map do |line|
-			# values = line.split(',').map { |num| num.to_f }
-			values = line.split(',').map
-			previous_barb = WindBarb.new(values[0].to_f, values[1], previous_barb)
+		
+		# Logic to be used with the selected data set
+		# barbs = load_strings(input_file).map do |line|
+		# 	# values = line.split(',').map { |num| num.to_f }
+		# 	values = line.split(',').map
+		# 	previous_barb = WindBarb.new(values[0].to_f, values[1], previous_barb)
+		# end
+		
+		# Pull readings for each hour in the data using the WeatherDataImporter
+		barbs = []
+		(0..23).each do |hour|
+			reading = pull_data_for_date_hour('01.08.2009', "#{hour}")
+			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
+			barbs << previous_barb
 		end
 	end
 	
@@ -101,6 +117,7 @@ class DanceDiagram < Processing::App
 	
 	def render_barbs
 		# Render the starting terminal circle
+		puts "in render_barbs, @barbs.first=#{@barbs.first}"
 		render_terminal_circle(@barbs.first.pos)
 		
 		@barbs.each do |barb|

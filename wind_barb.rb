@@ -25,7 +25,7 @@ class WindBarb
 	def initialize(speed, direction, previous_barb)
 		@pos = Point.new(width/2, height/2)
 		
-		@speed = speed
+		@speed = speed.to_f
 		@direction = direction
 		@previous_barb = previous_barb
 	end
