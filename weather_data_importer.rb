@@ -38,7 +38,8 @@ module WeatherDataImporter
 			end
 		end
 		# get_first_reading(hour_readings)
-		get_random_reading(hour_readings)
+		# get_random_reading(hour_readings)
+		get_strongest_reading(hour_readings)
 	end
 	
 	
@@ -50,6 +51,14 @@ module WeatherDataImporter
 	
 	def get_random_reading(readings)
 		readings[rand(readings.length)]
+	end
+	
+	def get_strongest_reading(readings)
+		strongest_reading = readings.first
+		readings.each do |reading|
+			strongest_reading = reading if reading[:wind_speed] > strongest_reading[:wind_speed]
+		end
+		strongest_reading
 	end
 	
 end

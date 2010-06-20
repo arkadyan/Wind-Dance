@@ -74,7 +74,6 @@ class DanceDiagram < Processing::App
 		barbs = []
 		(0..23).each do |hour|
 			reading = pull_data_for_date_hour('01.08.2009', "#{hour}")
-			puts "reading=#{reading}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
 			barbs << previous_barb
 		end
@@ -120,7 +119,6 @@ class DanceDiagram < Processing::App
 	
 	def render_barbs
 		# Render the starting terminal circle
-		puts "in render_barbs, @barbs.first=#{@barbs.first}"
 		render_terminal_circle(@barbs.first.pos)
 		
 		@barbs.each do |barb|
