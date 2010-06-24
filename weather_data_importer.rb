@@ -1,4 +1,5 @@
 module WeatherDataImporter
+	
 	RELATIVE_PRESSURE = 0
 	INDOOR_TEMPERATURE = 1
 	INDOOR_HUMIDITY = 2
@@ -11,6 +12,7 @@ module WeatherDataImporter
 	RAIN_TOTAL = 9
 	TIME = 10
 	DATE = 11
+	
 	
 	def pull_times_for_date(date)
 		input_file = "data/spws-data-flux-809-data_only.csv"
