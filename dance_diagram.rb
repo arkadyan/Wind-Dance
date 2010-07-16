@@ -34,6 +34,7 @@ class DanceDiagram < Processing::App
 	
 	def setup
 		no_loop
+		smooth
 		
 		@center = width / 2
 		@current_pos = Point.new(@center, @center)
