@@ -10,8 +10,8 @@ class Arrow
 	ARROW_STROKE_WEIGHT = 1
 
 	# Arrow head height and (center-to-edge) width
-	ARROW_HEIGHT = 10
-	ARROW_WIDTH = 5
+	ARROW_HEIGHT = 7
+	ARROW_WIDTH = 3
 	
 	OFFSET_LENGTH = 30
 	
