@@ -1,5 +1,4 @@
 require 'ruby-processing'
-# load 'weather_data_importer.rb'
 require 'weather_data_importer'
 require 'point'
 require 'wind_barb'
@@ -32,6 +31,11 @@ class DanceDiagram < Processing::App
 	MOVE_FROM_LAST_STEP_DISTANCE = 50
 	
 	
+	def initialize(options={})
+		super(options)
+	end
+	
+	
 	def setup
 		no_loop
 		smooth
@@ -52,29 +56,19 @@ class DanceDiagram < Processing::App
 	
 	
 	def load_data
-		input_file = "spws-data-flux-809-selected.csv"
-		# input_file = "test8.csv"
-		# input_file = "test7.csv"
-		# input_file = "test6.csv"
-		# input_file = "test5.csv"
-		# input_file = "test4.csv"
-		# input_file = "test3.csv"
-		# input_file = "test2.csv"
-		# input_file = "test1.csv"
+		# input_file = "data/spws-data-flux-809-data_only.csv"
+		input_file = "data/test9.csv"
+		# input_file = "data/test8.csv"
+		# input_file = "data/test1.csv"
 		
 		previous_barb = nil
 		
-		# Logic to be used with the selected data set
-		# barbs = load_strings(input_file).map do |line|
-		# 	# values = line.split(',').map { |num| num.to_f }
-		# 	values = line.split(',').map
-		# 	previous_barb = WindBarb.new(values[0].to_f, values[1], previous_barb)
-		# end
-		
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
-		(0..23).each do |hour|
-			reading = pull_data_for_date_hour('01.08.2009', "#{hour}")
+		# (0..23).each do |hour|
+		(0..3).each do |hour|
+			reading = pull_data_for_date_hour(input_file, '01.08.2009', "#{hour}")
+			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
 			barbs << previous_barb
 		end
@@ -119,8 +113,8 @@ class DanceDiagram < Processing::App
 	end
 	
 	def render_barbs
-		# Render the starting terminal circle
-		render_terminal_circle(@barbs.first.pos)
+		# Render the starting terminal circle if it's a calm step
+		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
 		
 		@barbs.each do |barb|
 			new_x = @current_pos.x + barb.speed * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
@@ -135,8 +129,8 @@ class DanceDiagram < Processing::App
 				barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
 			end
 			
-			# Render the final terminal circle
-			render_terminal_circle(@barbs.last.pos)
+			# Render the final terminal circle if it's a calm step
+			render_terminal_circle(@barbs.last.pos) if @barbs.last.speed==0
 
 			barb.render
 			
@@ -159,6 +153,12 @@ class DanceDiagram < Processing::App
 	end
 end
 
+
+# Run like: rp5 run dance_diagram.rb DanceDiagram 700 700
+# title = ARGV[0].to_s
+# width = ARGV[1].to_i
+# height = ARGV[2].to_i
+# DanceDiagram.new :title => title, :width => width, :height => height
 DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600

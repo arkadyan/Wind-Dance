@@ -17,9 +17,9 @@ module WeatherDataImporter
 	def get_all_dates
 	end
 	
-	def pull_times_for_date(date)
+	def pull_times_for_date(input_file, date)
 		times = Array.new
-		read_data.map do |line|
+		read_data(input_file).map do |line|
 			values = line.chomp.split(',').map
 			if values[DATE] == date
 				times << values[TIME]
@@ -28,9 +28,9 @@ module WeatherDataImporter
 		times
 	end
 	
-	def pull_data_for_date_hour(date, hour)
+	def pull_data_for_date_hour(input_file, date, hour)
 		hour_readings = Array.new
-		read_data.map do |line|
+		read_data(input_file).map do |line|
 			readings = line.chomp.split(',').map
 			current_hour = readings[TIME].split(':')[0]
 			if readings[DATE] == date && current_hour == hour
@@ -46,8 +46,7 @@ module WeatherDataImporter
 	
 	private
 	
-	def read_data
-		input_file = "data/spws-data-flux-809-data_only.csv"
+	def read_data(input_file)
 		File.readlines(input_file)
 	end
 
