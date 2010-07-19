@@ -28,6 +28,7 @@ class DanceDiagram < Processing::App
 	# STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 100
+	MIN_SPEED_MOVE = 1.75   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
 	MOVE_FROM_LAST_STEP_DISTANCE = 50
 	LINE_LENGTH_PLUS_OFFSET = 40
 	
@@ -57,8 +58,8 @@ class DanceDiagram < Processing::App
 	
 	
 	def load_data
-		# input_file = "data/spws-data-flux-809-data_only.csv"
-		input_file = "data/test9.csv"
+		input_file = "data/spws-data-flux-809-data_only.csv"
+		# input_file = "data/test9.csv"
 		# input_file = "data/test8.csv"
 		# input_file = "data/test1.csv"
 		
@@ -66,8 +67,8 @@ class DanceDiagram < Processing::App
 		
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
-		# (0..23).each do |hour|
-		(0..4).each do |hour|
+		(0..23).each do |hour|
+		# (0..4).each do |hour|
 			reading = pull_data_for_date_hour(input_file, '01.08.2009', "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
@@ -118,8 +119,8 @@ class DanceDiagram < Processing::App
 		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
 		
 		@barbs.each do |barb|
-			delta_x = ((barb.speed==0 or barb.speed>=1) ? barb.speed : 1) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
-			delta_y = ((barb.speed==0 or barb.speed>=1) ? barb.speed : 1) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
+			delta_x = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
+			delta_y = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
 			new_x = @current_pos.x + delta_x
 			new_y = @current_pos.y + delta_y
 			
