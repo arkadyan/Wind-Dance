@@ -29,6 +29,7 @@ class DanceDiagram < Processing::App
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 100
 	MOVE_FROM_LAST_STEP_DISTANCE = 50
+	LINE_LENGTH_PLUS_OFFSET = 40
 	
 	
 	def initialize(options={})
@@ -66,7 +67,7 @@ class DanceDiagram < Processing::App
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
 		# (0..23).each do |hour|
-		(0..3).each do |hour|
+		(0..4).each do |hour|
 			reading = pull_data_for_date_hour(input_file, '01.08.2009', "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
@@ -117,9 +118,11 @@ class DanceDiagram < Processing::App
 		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
 		
 		@barbs.each do |barb|
-			new_x = @current_pos.x + barb.speed * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
-			new_y = @current_pos.y + barb.speed * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
-
+			delta_x = ((barb.speed==0 or barb.speed>=1) ? barb.speed : 1) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
+			delta_y = ((barb.speed==0 or barb.speed>=1) ? barb.speed : 1) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
+			new_x = @current_pos.x + delta_x
+			new_y = @current_pos.y + delta_y
+			
 			barb.pos.x = new_x
 			barb.pos.y = new_y
 			
