@@ -34,7 +34,8 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		super(options)
+		@date = options[:date] || '01.08.2009'
+		super
 	end
 	
 	
@@ -69,7 +70,7 @@ class DanceDiagram < Processing::App
 		barbs = []
 		(0..23).each do |hour|
 		# (0..4).each do |hour|
-			reading = pull_data_for_date_hour(input_file, '01.08.2009', "#{hour}")
+			reading = pull_data_for_date_hour(input_file, @date, "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
 			barbs << previous_barb
@@ -158,11 +159,12 @@ class DanceDiagram < Processing::App
 end
 
 
-# Run like: rp5 run dance_diagram.rb DanceDiagram 700 700
+# Run like: rp5 run dance_diagram.rb DanceDiagram 700 700 01.08.2009
 # title = ARGV[0].to_s
 # width = ARGV[1].to_i
 # height = ARGV[2].to_i
-# DanceDiagram.new :title => title, :width => width, :height => height
+# date = ARGV[3].to_s
+# DanceDiagram.new :title => title, :width => width, :height => height, :date => date
 DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
