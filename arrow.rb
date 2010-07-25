@@ -28,8 +28,7 @@ class Arrow
 	
 	def render
 		if @to_barb.speed > 0
-			# Only try to draw a step arrow if there was a previous step
-			# to draw from
+			# Only try to draw a step arrow if there was a previous step to draw from
 			if @from_barb
 				render_to_step_barb
 			end

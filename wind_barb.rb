@@ -20,6 +20,9 @@ class WindBarb
 	ARROW_HEAD_WIDTH = 4
 	ARROW_STROKE_COLOR = 50
 	ARROW_STROKE_WEIGHT = 1
+	ARROW_DOT_WIDTH = 2
+	ARROW_DOT_OFFSET = 5
+	
 	
 
 	def initialize(speed, direction, previous_barb)
@@ -106,6 +109,15 @@ class WindBarb
 		# Draw the arrow head
 		# line 0, ARROW_LINE_LENGTH, -ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
 		# line 0, ARROW_LINE_LENGTH, ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
+		
+		# Draw a single dot above the arrow for the first step in a sequence
+		if !@previous_barb || @previous_barb.speed>0
+			fill 0
+			ellipse 0, ARROW_LINE_LENGTH+ARROW_DOT_OFFSET, ARROW_DOT_WIDTH, ARROW_DOT_WIDTH
+		end
+		
+		# Draw a double dot above the arrow for the final step in a sequence
+		
 		pop_matrix
 	end
 	

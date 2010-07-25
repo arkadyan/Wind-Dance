@@ -34,7 +34,7 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '03.08.2009'
+		@date = options[:date] || '01.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
@@ -147,6 +147,7 @@ class DanceDiagram < Processing::App
 	def render_terminal_circle(pos)
 		stroke_weight TERMINAL_CIRCLE_WEIGHT
 		stroke TERMINAL_CIRCLE_COLOR
+		no_fill
 		
 		ellipse pos.x, pos.y, TERMINAL_CIRCLE_WIDTH, TERMINAL_CIRCLE_WIDTH
 	end
