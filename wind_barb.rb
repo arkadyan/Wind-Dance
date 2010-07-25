@@ -5,7 +5,7 @@ require 'point'
 class WindBarb
 	include Processing::Proxy
 	
-	attr_accessor :speed, :direction, :pos, :previous_barb
+	attr_accessor :speed, :direction, :pos, :previous_barb, :last_calm_barb
 	
 	BARB_STROKE_COLOR = 0
 	BARB_STROKE_WEIGHT = 2
@@ -22,6 +22,7 @@ class WindBarb
 	ARROW_STROKE_WEIGHT = 1
 	ARROW_DOT_WIDTH = 2
 	ARROW_DOT_OFFSET = 5
+	ARROW_DOT_SEPARATION = 3
 	
 	
 
@@ -31,6 +32,8 @@ class WindBarb
 		@speed = speed.to_f
 		@direction = direction
 		@previous_barb = previous_barb
+		
+		@last_calm_barb = false
 	end
 	
 	def direction_in_radians
@@ -110,13 +113,18 @@ class WindBarb
 		# line 0, ARROW_LINE_LENGTH, -ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
 		# line 0, ARROW_LINE_LENGTH, ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
 		
-		# Draw a single dot above the arrow for the first step in a sequence
+		# Draw a single dot above the arrow for the first calm barb in a sequence
 		if !@previous_barb || @previous_barb.speed>0
 			fill 0
 			ellipse 0, ARROW_LINE_LENGTH+ARROW_DOT_OFFSET, ARROW_DOT_WIDTH, ARROW_DOT_WIDTH
+			no_fill
+		elsif @last_calm_barb
+			# Draw a double dot above the arrow for the final calm barb in a sequence
+			fill 0
+			ellipse -ARROW_DOT_SEPARATION, ARROW_LINE_LENGTH+ARROW_DOT_OFFSET, ARROW_DOT_WIDTH, ARROW_DOT_WIDTH
+			ellipse ARROW_DOT_SEPARATION, ARROW_LINE_LENGTH+ARROW_DOT_OFFSET, ARROW_DOT_WIDTH, ARROW_DOT_WIDTH
+			no_fill
 		end
-		
-		# Draw a double dot above the arrow for the final step in a sequence
 		
 		pop_matrix
 	end

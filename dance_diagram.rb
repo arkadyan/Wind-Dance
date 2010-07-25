@@ -117,7 +117,7 @@ class DanceDiagram < Processing::App
 		# Render the starting terminal circle if it's a calm step
 		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
 		
-		@barbs.each do |barb|
+		@barbs.each_with_index do |barb, index|
 			delta_x = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
 			delta_y = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
 			new_x = @current_pos.x + delta_x
@@ -132,8 +132,10 @@ class DanceDiagram < Processing::App
 				barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
 			end
 			
-			# Render the final terminal circle if it's a calm step
-			render_terminal_circle(@barbs.last.pos) if @barbs.last.speed==0
+			# Let the barb know if it is the last calm barb in a sequence
+			if barb.speed==0 && barb.previous_barb && barb.previous_barb.speed==0 && !@barbs[index+1] || @barbs[index+1].speed>0
+				barb.last_calm_barb = true
+			end
 
 			barb.render
 			
@@ -142,6 +144,9 @@ class DanceDiagram < Processing::App
 
 			@current_pos.set(barb.pos.x, barb.pos.y)
 		end
+			
+		# Render the final terminal circle if it's a calm step
+		render_terminal_circle(@barbs.last.pos) if @barbs.last.speed==0
 	end
 	
 	def render_terminal_circle(pos)
