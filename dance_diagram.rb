@@ -34,7 +34,7 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '01.08.2009'
+		@date = options[:date] || '04.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
@@ -133,7 +133,7 @@ class DanceDiagram < Processing::App
 			end
 			
 			# Let the barb know if it is the last calm barb in a sequence
-			if barb.speed==0 && barb.previous_barb && barb.previous_barb.speed==0 && !@barbs[index+1] || @barbs[index+1].speed>0
+			if barb.speed==0 && barb.previous_barb && barb.previous_barb.speed==0 && !@barbs[index+1] || (@barbs[index+1] && @barbs[index+1].speed>0)
 				barb.last_calm_barb = true
 			end
 
