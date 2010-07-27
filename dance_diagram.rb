@@ -118,10 +118,15 @@ class DanceDiagram < Processing::App
 		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
 		
 		@barbs.each_with_index do |barb, index|
-			delta_x = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
-			delta_y = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
-			new_x = @current_pos.x + delta_x
-			new_y = @current_pos.y + delta_y
+			new_x = @current_pos.x
+			new_y = @current_pos.y
+			# Only move if we are past the first step
+			if index > 0
+				delta_x = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
+				delta_y = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
+				new_x += delta_x
+				new_y += delta_y
+			end
 			
 			barb.pos.x = new_x
 			barb.pos.y = new_y
