@@ -24,17 +24,16 @@ class DanceDiagram < Processing::App
 	
 	# STEP_MULTIPLIER = 6
 	# STEP_MULTIPLIER = 15
-	STEP_MULTIPLIER = 40
+	# STEP_MULTIPLIER = 40
 	# STEP_MULTIPLIER = 60
-	# STEP_MULTIPLIER = 80
+	STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 100
 	MIN_SPEED_MOVE = 1.75   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
-	MOVE_FROM_LAST_STEP_DISTANCE = 50
-	LINE_LENGTH_PLUS_OFFSET = 40
+	MOVE_FROM_LAST_STEP_DISTANCE = 100
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '31.08.2009'
+		@date = options[:date] || '01.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
@@ -179,5 +178,6 @@ DanceDiagram.new :title => title, :width => width, :height => height, :date => d
 # DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
+# DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
 # DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
 # DanceDiagram.new :title => "DanceDiagram", :width => 4308, :height => 4308

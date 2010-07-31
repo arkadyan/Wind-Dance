@@ -10,14 +10,12 @@ class WindBarb
 	BARB_STROKE_COLOR = 0
 	BARB_STROKE_WEIGHT = 2
 
-	MAIN_LINE_LENGTH = 30
+	MAIN_LINE_LENGTH = 80
 	DOT_WIDTH = 3
 	CIRCLE_WIDTH = 20
 
 	# Arrow head height and (center-to-edge) width
-	ARROW_LINE_LENGTH = 30
-	ARROW_HEAD_HEIGHT = 8
-	ARROW_HEAD_WIDTH = 4
+	ARROW_LINE_LENGTH = 80
 	ARROW_STROKE_COLOR = 50
 	ARROW_STROKE_WEIGHT = 1
 	ARROW_DOT_WIDTH = 1
@@ -109,10 +107,6 @@ class WindBarb
 		# Draw the arrow line
 		line 0, 0, 0, ARROW_LINE_LENGTH
 		
-		# Draw the arrow head
-		# line 0, ARROW_LINE_LENGTH, -ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
-		# line 0, ARROW_LINE_LENGTH, ARROW_HEAD_WIDTH, ARROW_LINE_LENGTH-ARROW_HEAD_HEIGHT
-		
 		# Draw a single dot above the arrow for the first calm barb in a sequence
 		if !@previous_barb || @previous_barb.speed>0
 			fill 0
@@ -142,9 +136,9 @@ class WindBarb
 	end
 	
 	def render_barbs(from_point, length, speed)
-		full_flag_length = 20
+		full_flag_length = 40
 		flag_length = 0
-		flag_offset = 5
+		flag_offset = 10
 		flag_angle = 3*Math::PI/8
 		to_point = Point.new(from_point.x+length*Math.cos(direction_in_radians), from_point.y+length*Math.sin(direction_in_radians))
 		
