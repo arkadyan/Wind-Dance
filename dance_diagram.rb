@@ -140,11 +140,12 @@ class DanceDiagram < Processing::App
 				barb.last_calm_barb = true
 			end
 
-			barb.render
-			
 			# Draw arrow from previous step to the new step
 			Arrow.new(barb).render
 
+			# Render the barb
+			barb.render
+			
 			@current_pos.set(barb.pos.x, barb.pos.y)
 		end
 			
