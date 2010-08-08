@@ -167,16 +167,16 @@ end
 
 
 # Run like: rp5 run dance_diagram.rb DanceDiagram 700 700 01.08.2009 data/spws-data-flux-809-data_only.csv test_diagram
-title = ARGV[0].to_s
-width = ARGV[1].to_i
-height = ARGV[2].to_i
-date = ARGV[3].to_s
-input_file = ARGV[4].to_s
-output_file = ARGV[5].to_s
-DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file
+# title = ARGV[0].to_s
+# width = ARGV[1].to_i
+# height = ARGV[2].to_i
+# date = ARGV[3].to_s
+# input_file = ARGV[4].to_s
+# output_file = ARGV[5].to_s
+# DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file
 # DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
-# DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
+DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
 # DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
 # DanceDiagram.new :title => "DanceDiagram", :width => 4308, :height => 4308
