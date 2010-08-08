@@ -66,7 +66,6 @@ class DanceDiagram < Processing::App
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
 		(0..23).each do |hour|
-		# (0..4).each do |hour|
 			reading = pull_data_for_date_hour(@input_file, @date, "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
