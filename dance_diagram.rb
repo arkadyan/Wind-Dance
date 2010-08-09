@@ -33,7 +33,7 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '01.08.2009'
+		@date = options[:date] || '07.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
@@ -178,6 +178,6 @@ end
 # DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
-DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
-# DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
+# DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
+DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
 # DanceDiagram.new :title => "DanceDiagram", :width => 4308, :height => 4308
