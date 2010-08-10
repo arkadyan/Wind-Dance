@@ -28,20 +28,20 @@ class DanceDiagram < Processing::App
 	STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 100
-	MIN_SPEED_MOVE = 1.75   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
-	MOVE_FROM_LAST_STEP_DISTANCE = 100
+	MIN_SPEED_MOVE = 2.75   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	MOVE_FROM_LAST_STEP_DISTANCE = 175
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '12.08.2009'
+		@date = options[:date] || '02.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
-		# @starting_offset_x = options[:starting_offset_x] || '0'
 		@starting_offset_x = options[:starting_offset_x] || '0'
+		# @starting_offset_x = options[:starting_offset_x] || '5000'
 		@starting_offset_x = @starting_offset_x.to_i
-		# @starting_offset_y = options[:starting_offset_y] || '0'
 		@starting_offset_y = options[:starting_offset_y] || '0'
+		# @starting_offset_y = options[:starting_offset_y] || '5000'
 		@starting_offset_y = @starting_offset_y.to_i
 		super
 	end
@@ -125,7 +125,7 @@ class DanceDiagram < Processing::App
 	
 	def render_barbs
 		# Render the starting terminal circle if it's a calm step
-		render_terminal_circle(@barbs.first.pos) if @barbs.first.speed==0
+		render_terminal_circle(@current_pos) if @barbs.first.speed==0
 		
 		@barbs.each_with_index do |barb, index|
 			new_x = @current_pos.x
@@ -180,15 +180,15 @@ end
 
 
 # Run like: rp5 run dance_diagram.rb DanceDiagram 700 700 01.08.2009 data/spws-data-flux-809-data_only.csv test_diagram
-# title = ARGV[0].to_s
-# width = ARGV[1].to_i
-# height = ARGV[2].to_i
-# date = ARGV[3].to_s
-# input_file = ARGV[4].to_s
-# output_file = ARGV[5].to_s
-# starting_offset_x = ARGV[6].to_s
-# starting_offset_y = ARGV[7].to_s
-# DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y
+title = ARGV[0].to_s
+width = ARGV[1].to_i
+height = ARGV[2].to_i
+date = ARGV[3].to_s
+input_file = ARGV[4].to_s
+output_file = ARGV[5].to_s
+starting_offset_x = ARGV[6].to_s
+starting_offset_y = ARGV[7].to_s
+DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y
 # DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
@@ -196,5 +196,5 @@ end
 # DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
 # DanceDiagram.new :title => "DanceDiagram", :width => 4308, :height => 4308
 # DanceDiagram.new :title => "DanceDiagram", :width => 4800, :height => 4800
-DanceDiagram.new :title => "DanceDiagram", :width => 7200, :height => 7200
+# DanceDiagram.new :title => "DanceDiagram", :width => 7200, :height => 7200
 # DanceDiagram.new :title => "DanceDiagram", :width => 9600, :height => 9600
