@@ -33,9 +33,14 @@ class Arrow
 				render_to_step_barb
 			end
 		else
+			# Display a line with no arrow head if drawing from a moving step 
+			# to a calm step
+			if @from_barb && @from_barb.speed>0
+				render_to_step_barb(true)
+				
 			# Only display a calm arrow if there was a previous calm step,
 			# and it wasn't in the same direction
-			if @from_barb && @from_barb.speed==0 && @from_barb.direction != @to_barb.direction
+			elsif @from_barb && @from_barb.speed==0 && @from_barb.direction != @to_barb.direction
 				render_to_calm_barb
 			end
 		end
@@ -44,7 +49,11 @@ class Arrow
 	
 	private
 	
-	def render_to_step_barb
+	# This started out as a straight line drawn to step barbs,
+	# but at a certain point it also started being used to draw
+	# straight lines with no arrow heads from step barbs to
+	# calm barbs.
+	def render_to_step_barb(calm=false)
 		stroke ARROW_STROKE_COLOR
 		stroke_weight ARROW_STROKE_WEIGHT
 		
@@ -87,12 +96,14 @@ class Arrow
 		line line_from.x, line_from.y, line_to.x, line_to.y
 		
 		# Draw the arrow head
-		push_matrix
-		translate line_to.x, line_to.y
-		rotate calculate_rotation(adj, opp, angle)
-		line 0, 0, ARROW_WIDTH, -ARROW_HEIGHT
-		line 0, 0, -ARROW_WIDTH, -ARROW_HEIGHT
-		pop_matrix
+		if !calm
+			push_matrix
+			translate line_to.x, line_to.y
+			rotate calculate_rotation(adj, opp, angle)
+			line 0, 0, ARROW_WIDTH, -ARROW_HEIGHT
+			line 0, 0, -ARROW_WIDTH, -ARROW_HEIGHT
+			pop_matrix
+		end
 	end
 	
 	def render_to_calm_barb
