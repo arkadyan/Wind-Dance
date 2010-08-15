@@ -25,7 +25,8 @@ class DanceDiagram < Processing::App
 	# STEP_MULTIPLIER = 6
 	# STEP_MULTIPLIER = 15
 	# STEP_MULTIPLIER = 40
-	STEP_MULTIPLIER = 60
+	STEP_MULTIPLIER = 50
+	# STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 100
 	MIN_SPEED_MOVE = 2.75   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
@@ -33,15 +34,15 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '02.08.2009'
+		@date = options[:date] || '01.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
 		@starting_offset_x = options[:starting_offset_x] || '0'
-		# @starting_offset_x = options[:starting_offset_x] || '5000'
+		# @starting_offset_x = options[:starting_offset_x] || '5500'
 		@starting_offset_x = @starting_offset_x.to_i
 		@starting_offset_y = options[:starting_offset_y] || '0'
-		# @starting_offset_y = options[:starting_offset_y] || '5000'
+		# @starting_offset_y = options[:starting_offset_y] || '5500'
 		@starting_offset_y = @starting_offset_y.to_i
 		super
 	end
@@ -196,5 +197,6 @@ DanceDiagram.new :title => title, :width => width, :height => height, :date => d
 # DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
 # DanceDiagram.new :title => "DanceDiagram", :width => 4308, :height => 4308
 # DanceDiagram.new :title => "DanceDiagram", :width => 4800, :height => 4800
+# DanceDiagram.new :title => "DanceDiagram", :width => 6000, :height => 6000
 # DanceDiagram.new :title => "DanceDiagram", :width => 7200, :height => 7200
 # DanceDiagram.new :title => "DanceDiagram", :width => 9600, :height => 9600
