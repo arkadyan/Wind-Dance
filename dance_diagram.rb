@@ -34,15 +34,15 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '01.08.2009'
+		@date = options[:date] || '11.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
-		@starting_offset_x = options[:starting_offset_x] || '0'
-		# @starting_offset_x = options[:starting_offset_x] || '5500'
+		# @starting_offset_x = options[:starting_offset_x] || '0'
+		@starting_offset_x = options[:starting_offset_x] || '4500'
 		@starting_offset_x = @starting_offset_x.to_i
-		@starting_offset_y = options[:starting_offset_y] || '0'
-		# @starting_offset_y = options[:starting_offset_y] || '5500'
+		# @starting_offset_y = options[:starting_offset_y] || '0'
+		@starting_offset_y = options[:starting_offset_y] || '4500'
 		@starting_offset_y = @starting_offset_y.to_i
 		super
 	end

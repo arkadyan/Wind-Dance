@@ -7,16 +7,19 @@
 	case date
 	when '04.08.2009'
 		starting_offset_x = 2000
-		starting_offset_y = 2000
-	when '07.08.2009'
-		starting_offset_x = 6500
-		starting_offset_y = 6500
-	when '09.08.2009'
-		starting_offset_x = 1000
 		starting_offset_y = 1000
-	when '10.08.2009', '11.08.2009'
-		starting_offset_x = 5000
+	when '07.08.2009'
+		starting_offset_x = 5500
 		starting_offset_y = 5000
+	when '09.08.2009'
+		starting_offset_x = 1500
+		starting_offset_y = 700
+	when '10.08.2009'
+		starting_offset_x = 4500
+		starting_offset_y = 3500
+	when '11.08.2009'
+		starting_offset_x = 4500
+		starting_offset_y = 4500
 	else
 		starting_offset_x = 0
 		starting_offset_y = 0
