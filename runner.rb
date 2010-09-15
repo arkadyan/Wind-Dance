@@ -1,5 +1,4 @@
-# (1..31).each do |day|
-(16..31).each do |day|
+(1..31).each do |day|
 	date = "#{"%02d" % day}.08.2009"
 	
 	# Define offsets for days whose data would extend
@@ -26,9 +25,12 @@
 	when '11.08.2009'
 		starting_offset_x = 3000
 		starting_offset_y = 3000
-	when '20.08.2009', '21.08.2009'
-		starting_offset_x = 2500
+	when '18.08.2009'
+		starting_offset_x = 2000
 		starting_offset_y = 1500
+	when '20.08.2009', '21.08.2009'
+		starting_offset_x = 1500
+		starting_offset_y = 800
 	when '26.08.2009'
 		starting_offset_x = 3500
 		starting_offset_y = 2500
