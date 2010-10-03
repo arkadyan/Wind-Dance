@@ -6,7 +6,7 @@ require 'point'
 class Arrow
 	include Processing::Proxy
 	
-	ARROW_STROKE_COLOR = 150
+	ARROW_STROKE_COLOR = 100
 	ARROW_STROKE_WEIGHT = 1
 
 	# Arrow head height and (center-to-edge) width
