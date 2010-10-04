@@ -45,6 +45,10 @@ class DanceDiagram < Processing::App
 		@starting_offset_y = options[:starting_offset_y] || '0'
 		# @starting_offset_y = options[:starting_offset_y] || '3500'
 		@starting_offset_y = @starting_offset_y.to_i
+		@first_hour = options[:first_hour] || '0'
+		@first_hour = @first_hour.to_i
+		@last_hour = options[:last_hour] || '23'
+		@last_hour = @last_hour.to_i
 		super
 	end
 	
@@ -79,7 +83,7 @@ class DanceDiagram < Processing::App
 		
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
-		(0..23).each do |hour|
+		(@first_hour..@last_hour).each do |hour|
 			reading = pull_data_for_date_hour(@input_file, @date, "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
@@ -190,7 +194,9 @@ input_file = ARGV[4].to_s
 output_file = ARGV[5].to_s
 starting_offset_x = ARGV[6].to_s
 starting_offset_y = ARGV[7].to_s
-DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y
+first_hour = ARGV[8].to_s
+last_hour = ARGV[9].to_s
+DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y, :first_hour => first_hour, :last_hour => last_hour
 # DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
 # DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
 # DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
@@ -201,3 +207,5 @@ DanceDiagram.new :title => title, :width => width, :height => height, :date => d
 # DanceDiagram.new :title => "DanceDiagram", :width => 6000, :height => 6000
 # DanceDiagram.new :title => "DanceDiagram", :width => 7200, :height => 7200
 # DanceDiagram.new :title => "DanceDiagram", :width => 9600, :height => 9600
+
+# DanceDiagram.new :title => "DanceDiagram", :width => 4000, :height => 4000, :date => "21.09.2010", :input_file => 'data/concordautumneqwind.csv', :first_hour => 0, :last_hour => 22
