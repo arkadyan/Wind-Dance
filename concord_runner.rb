@@ -2,7 +2,7 @@
 	date = "#{"%02d" % day}.09.2010"
 	puts "date = #{date}"
 	
-	starting_offset_x = 0
+	starting_offset_x = 3800
 	starting_offset_y = 0
 	
 	size = 4000
