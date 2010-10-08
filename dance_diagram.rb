@@ -24,13 +24,14 @@ class DanceDiagram < Processing::App
 	
 	# STEP_MULTIPLIER = 6
 	# STEP_MULTIPLIER = 15
-	STEP_MULTIPLIER = 35
+	# STEP_MULTIPLIER = 35
 	# STEP_MULTIPLIER = 40
 	# STEP_MULTIPLIER = 50
 	# STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
-	# STEP_MULTIPLIER = 100
-	MIN_SPEED_MOVE = 3.25   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	STEP_MULTIPLIER = 120
+	# MIN_SPEED_MOVE = 3.25   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	MIN_SPEED_MOVE = 1   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
 	MOVE_FROM_LAST_STEP_DISTANCE = 175
 	
 	
@@ -83,6 +84,7 @@ class DanceDiagram < Processing::App
 		
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
+		puts "@first_hour=#{@first_hour}, @last_hour=#{@last_hour}"
 		(@first_hour..@last_hour).each do |hour|
 			reading = pull_data_for_date_hour(@input_file, @date, "#{hour}")
 			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
@@ -138,8 +140,10 @@ class DanceDiagram < Processing::App
 			new_y = @current_pos.y
 			# Only move if we are past the first step
 			if index > 0
-				delta_x = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
-				delta_y = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE) * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
+				pre_multiplier = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE)
+				puts "barb.speed=#{barb.speed}, pre_multiplier=#{pre_multiplier}"
+				delta_x = pre_multiplier * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
+				delta_y = pre_multiplier * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
 				new_x += delta_x
 				new_y += delta_y
 			end
@@ -147,7 +151,8 @@ class DanceDiagram < Processing::App
 			barb.pos.x = new_x
 			barb.pos.y = new_y
 			
-			# If the last barb was a step, move away from it in the same direction
+			# If this is a calm barb and the last barb was a step, 
+			# move away from it in the same direction
 			if barb.speed==0 and barb.previous_barb and barb.previous_barb.speed > 0
 				barb.pos.x -= MOVE_FROM_LAST_STEP_DISTANCE*Math.cos((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
 				barb.pos.y += MOVE_FROM_LAST_STEP_DISTANCE*Math.sin((3*Math::PI-barb.previous_barb.direction_in_radians).abs)
