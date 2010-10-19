@@ -87,7 +87,11 @@ class DanceDiagram < Processing::App
 		puts "@first_hour=#{@first_hour}, @last_hour=#{@last_hour}"
 		(@first_hour..@last_hour).each do |hour|
 			reading = pull_data_for_date_hour(@input_file, @date, "#{hour}")
-			puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
+			if reading
+				puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
+			else
+				puts "!!! No reading for hour #{hour} !!!"
+			end
 			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
 			barbs << previous_barb
 		end
