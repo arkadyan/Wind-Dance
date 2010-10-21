@@ -145,9 +145,10 @@ class DanceDiagram < Processing::App
 			# Only move if we are past the first step
 			if index > 0
 				pre_multiplier = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE)
-				puts "barb.speed=#{barb.speed}, pre_multiplier=#{pre_multiplier}"
-				delta_x = pre_multiplier * STEP_MULTIPLIER * Math.cos(barb.direction_in_radians)
-				delta_y = pre_multiplier * STEP_MULTIPLIER * Math.sin(barb.direction_in_radians)
+				move_distance = pre_multiplier * STEP_MULTIPLIER
+				puts "barb.speed=#{barb.speed}, pre_multiplier=#{pre_multiplier}, move_distance=#{move_distance}"
+				delta_x = move_distance * Math.cos(barb.direction_in_radians)
+				delta_y = move_distance * Math.sin(barb.direction_in_radians)
 				new_x += delta_x
 				new_y += delta_y
 			end
