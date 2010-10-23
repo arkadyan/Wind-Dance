@@ -3,20 +3,20 @@
 	
 	case date
 	when '01.10.1844'
-		starting_offset_x = 2200
-		starting_offset_y = 3200
+		starting_offset_x = 2100
+		starting_offset_y = 2700
 	when '25.03.1846'
-		starting_offset_x = 3800
-		starting_offset_y = 1500
+		starting_offset_x = 3500
+		starting_offset_y = 2000
 	when '08.04.1847'
 		starting_offset_x = 2300
-		starting_offset_y = 3000
+		starting_offset_y = 2500
 	when '28.03.1851'
-		starting_offset_x = 2500
-		starting_offset_y = 3800
+		starting_offset_x = 2300
+		starting_offset_y = 3000
 	when '23.03.1853'
-		starting_offset_x = 3500
-		starting_offset_y = 500
+		starting_offset_x = 3300
+		starting_offset_y = 1000
 	else
 		starting_offset_x = 0
 		starting_offset_y = 0

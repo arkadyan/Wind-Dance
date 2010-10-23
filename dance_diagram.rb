@@ -23,14 +23,17 @@ class DanceDiagram < Processing::App
 	MINOR_WEIGHT = 1
 	
 	# STEP_MULTIPLIER = 6
-	# STEP_MULTIPLIER = 15
-	STEP_MULTIPLIER = 35
+	STEP_MULTIPLIER = 15
+	# STEP_MULTIPLIER = 20
+	# STEP_MULTIPLIER = 30
+	# STEP_MULTIPLIER = 35
 	# STEP_MULTIPLIER = 40
 	# STEP_MULTIPLIER = 50
 	# STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 120
-	MIN_SPEED_MOVE = 3.2   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	MIN_SPEED_MOVE = 7.5   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	# MIN_SPEED_MOVE = 3.2   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
 	# MIN_SPEED_MOVE = 1   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
 	MOVE_FROM_LAST_STEP_DISTANCE = 175
 	
@@ -76,6 +79,7 @@ class DanceDiagram < Processing::App
 		render_compass_points
 		render_barbs
 		save_image
+		exit
 	end
 	
 	
