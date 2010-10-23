@@ -23,7 +23,8 @@ class DanceDiagram < Processing::App
 	MINOR_WEIGHT = 1
 	
 	# STEP_MULTIPLIER = 6
-	STEP_MULTIPLIER = 15
+	STEP_MULTIPLIER = 12
+	# STEP_MULTIPLIER = 15
 	# STEP_MULTIPLIER = 20
 	# STEP_MULTIPLIER = 30
 	# STEP_MULTIPLIER = 35
@@ -32,9 +33,7 @@ class DanceDiagram < Processing::App
 	# STEP_MULTIPLIER = 60
 	# STEP_MULTIPLIER = 80
 	# STEP_MULTIPLIER = 120
-	MIN_SPEED_MOVE = 7.5   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
-	# MIN_SPEED_MOVE = 3.2   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
-	# MIN_SPEED_MOVE = 1   # MIN_SPEED_MOVE * STEP_MULTIPLIER should be > Arrow.OFFSET_LENGTH plus a bit
+	EXTRA_MOVE_CONST = 80
 	MOVE_FROM_LAST_STEP_DISTANCE = 175
 	
 	
@@ -148,9 +147,8 @@ class DanceDiagram < Processing::App
 			new_y = @current_pos.y
 			# Only move if we are past the first step
 			if index > 0
-				pre_multiplier = ((barb.speed==0 or barb.speed>=MIN_SPEED_MOVE) ? barb.speed : MIN_SPEED_MOVE)
-				move_distance = pre_multiplier * STEP_MULTIPLIER
-				puts "barb.speed=#{barb.speed}, pre_multiplier=#{pre_multiplier}, move_distance=#{move_distance}"
+				move_distance = barb.speed==0 ? 0 : barb.speed*STEP_MULTIPLIER+EXTRA_MOVE_CONST
+				puts "barb.speed=#{barb.speed}, move_distance=#{move_distance}"
 				delta_x = move_distance * Math.cos(barb.direction_in_radians)
 				delta_y = move_distance * Math.sin(barb.direction_in_radians)
 				new_x += delta_x
