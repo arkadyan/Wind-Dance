@@ -1,10 +1,10 @@
-['01.10.1844','25.03.1846','08.04.1847','28.03.1851','23.03.1853'].each do |date|
+['01.04.1845','25.03.1846','08.04.1847','28.03.1851','23.03.1853'].each do |date|
 	puts "date = #{date}"
 	
 	case date
-	when '01.10.1844'
-		starting_offset_x = 2100
-		starting_offset_y = 2700
+	when '01.04.1845'
+		starting_offset_x = 0
+		starting_offset_y = 0
 	when '25.03.1846'
 		starting_offset_x = 3700
 		starting_offset_y = 2000
