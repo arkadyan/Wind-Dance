@@ -1,5 +1,4 @@
-# (1..31).each do |day|
-(17..17).each do |day|
+(1..31).each do |day|
 	date = "#{"%02d" % day}.08.2009"
 	puts "date = #{date}"
 	
