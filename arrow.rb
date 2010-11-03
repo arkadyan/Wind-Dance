@@ -13,7 +13,7 @@ class Arrow
 	ARROW_HEIGHT = 7
 	ARROW_WIDTH = 3
 	
-	OFFSET_LENGTH = 50
+	OFFSET_LENGTH = 95
 	
 	STARTING_DISTANCE_OUT = 13
 	DISTANCE_OUT_OFFSET = 3
@@ -36,7 +36,8 @@ class Arrow
 			# Display a line with no arrow head if drawing from a moving step 
 			# to a calm step
 			if @from_barb && @from_barb.speed>0
-				render_to_step_barb(true)
+				render_to_step_barb   # Trying with an arrow head
+				# render_to_step_barb(true)
 				
 			# Only display a calm arrow if there was a previous calm step,
 			# and it wasn't in the same direction

@@ -1,4 +1,5 @@
-['21.02.2010','12.04.2001','23.02.2002','05.04.2005','13.03.2006'].each do |date|
+# ['21.02.2010','12.04.2001','23.02.2002','05.04.2005','13.03.2006'].each do |date|
+['23.02.2002'].each do |date|
 	puts "date = #{date}"
 	
 	case date
@@ -10,7 +11,7 @@
 		starting_offset_y = 1800
 	when '23.02.2002'
 		starting_offset_x = 3000
-		starting_offset_y = 2800
+		starting_offset_y = 3300
 	when '05.04.2005'
 		starting_offset_x = 3700
 		starting_offset_y = 2700
