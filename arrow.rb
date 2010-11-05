@@ -13,6 +13,9 @@ class Arrow
 	ARROW_HEIGHT = 7
 	ARROW_WIDTH = 3
 	
+	CALM_ARROW_HEIGHT = 6
+	CALM_ARROW_WIDTH = 1
+	
 	OFFSET_LENGTH = 95
 	
 	STARTING_DISTANCE_OUT = 13
@@ -148,7 +151,7 @@ class Arrow
 		arrow_angle += Math::PI
 		
 		# Draw the arrow head
-		line(arrow_x, arrow_y, Math.cos(arrow_angle)*10 + arrow_x, Math.sin(arrow_angle)*10 + arrow_y);
+		line(arrow_x, arrow_y, Math.cos(arrow_angle)*CALM_ARROW_HEIGHT + arrow_x, Math.sin(arrow_angle)*CALM_ARROW_HEIGHT + arrow_y);
 	end
 	
 	def calculate_rotation(adj, opp, angle)
