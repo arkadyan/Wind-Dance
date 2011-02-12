@@ -28,7 +28,7 @@ class DanceDiagram < Processing::App
 	
 	
 	def initialize(options={})
-		@date = options[:date] || '01.08.2009'
+		@dates = options[:dates] || '01.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
 		@output_file = options[:output_file] || 'test_diagram'
 		@starting_offset_x = options[:starting_offset_x] || '0'
@@ -39,6 +39,8 @@ class DanceDiagram < Processing::App
 		@first_hour = @first_hour.to_i
 		@last_hour = options[:last_hour] || '23'
 		@last_hour = @last_hour.to_i
+		@days_per_diagram = options[:days_per_diagram] || '1'
+		@days_per_diagram = @days_per_diagram.to_i
 		super
 	end
 	
@@ -74,16 +76,19 @@ class DanceDiagram < Processing::App
 		
 		# Pull readings for each hour in the data using the WeatherDataImporter
 		barbs = []
-		puts "@first_hour=#{@first_hour}, @last_hour=#{@last_hour}"
-		(@first_hour..@last_hour).each do |hour|
-			reading = pull_data_for_date_hour(@input_file, @date, "#{hour}")
-			if reading
-				puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
-			else
-				puts "!!! No reading for hour #{hour} !!!"
+		puts "@days_per_diagram=#{@days_per_diagram}, @first_hour=#{@first_hour}, @last_hour=#{@last_hour}"
+		(1..@days_per_diagram).each do |day|
+			date = @dates.split(',')[day-1]
+			(@first_hour..@last_hour).each do |hour|
+				reading = pull_data_for_date_hour(@input_file, date, "#{hour}")
+				if reading
+					puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
+				else
+					puts "!!! No reading for hour #{hour} !!!"
+				end
+				previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
+				barbs << previous_barb
 			end
-			previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
-			barbs << previous_barb
 		end
 		
 		barbs
@@ -188,11 +193,11 @@ end
 title = ARGV[0].to_s
 width = ARGV[1].to_i
 height = ARGV[2].to_i
-date = ARGV[3].to_s
+dates = ARGV[3].to_s
 input_file = ARGV[4].to_s
 output_file = ARGV[5].to_s
 starting_offset_x = ARGV[6].to_s
 starting_offset_y = ARGV[7].to_s
 first_hour = ARGV[8].to_s
 last_hour = ARGV[9].to_s
-DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y, :first_hour => first_hour, :last_hour => last_hour
+DanceDiagram.new :title => title, :width => width, :height => height, :dates => dates, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y, :first_hour => first_hour, :last_hour => last_hour, :days_per_diagram => dates.split(',').size
