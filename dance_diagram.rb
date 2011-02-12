@@ -23,17 +23,6 @@ class DanceDiagram < Processing::App
 	MINOR_WEIGHT = 1
 	
 	STEP_MULTIPLIER = 2.5
-	# STEP_MULTIPLIER = 8
-	# STEP_MULTIPLIER = 15
-	# STEP_MULTIPLIER = 20
-	# STEP_MULTIPLIER = 30
-	# STEP_MULTIPLIER = 35
-	# STEP_MULTIPLIER = 40
-	# STEP_MULTIPLIER = 50
-	# STEP_MULTIPLIER = 60
-	# STEP_MULTIPLIER = 80
-	# STEP_MULTIPLIER = 120
-	# EXTRA_MOVE_CONST = 80
 	EXTRA_MOVE_CONST = 190
 	MOVE_FROM_LAST_STEP_DISTANCE = 250
 	
@@ -41,13 +30,10 @@ class DanceDiagram < Processing::App
 	def initialize(options={})
 		@date = options[:date] || '01.08.2009'
 		@input_file = options[:input_file] || 'data/spws-data-flux-809-data_only.csv'
-		# @input_file = options[:input_file] || 'data/test9.csv'
 		@output_file = options[:output_file] || 'test_diagram'
 		@starting_offset_x = options[:starting_offset_x] || '0'
-		# @starting_offset_x = options[:starting_offset_x] || '3900'
 		@starting_offset_x = @starting_offset_x.to_i
 		@starting_offset_y = options[:starting_offset_y] || '0'
-		# @starting_offset_y = options[:starting_offset_y] || '3500'
 		@starting_offset_y = @starting_offset_y.to_i
 		@first_hour = options[:first_hour] || '0'
 		@first_hour = @first_hour.to_i
@@ -210,15 +196,3 @@ starting_offset_y = ARGV[7].to_s
 first_hour = ARGV[8].to_s
 last_hour = ARGV[9].to_s
 DanceDiagram.new :title => title, :width => width, :height => height, :date => date, :input_file => input_file, :output_file => output_file, :starting_offset_x => starting_offset_x, :starting_offset_y => starting_offset_y, :first_hour => first_hour, :last_hour => last_hour
-# DanceDiagram.new :title => "DanceDiagram", :width => 700, :height => 700
-# DanceDiagram.new :title => "DanceDiagram", :width => 1200, :height => 1200
-# DanceDiagram.new :title => "DanceDiagram", :width => 1600, :height => 1600
-# DanceDiagram.new :title => "DanceDiagram", :width => 2400, :height => 2400
-# DanceDiagram.new :title => "DanceDiagram", :width => 3600, :height => 3600
-# DanceDiagram.new :title => "DanceDiagram", :width => 4000, :height => 4000
-# DanceDiagram.new :title => "DanceDiagram", :width => 4800, :height => 4800
-# DanceDiagram.new :title => "DanceDiagram", :width => 6000, :height => 6000
-# DanceDiagram.new :title => "DanceDiagram", :width => 7200, :height => 7200
-# DanceDiagram.new :title => "DanceDiagram", :width => 9600, :height => 9600
-
-# DanceDiagram.new :title => "DanceDiagram", :width => 4000, :height => 4000, :date => "21.09.2010", :input_file => 'data/concordautumneqwind.csv', :first_hour => 0, :last_hour => 22
