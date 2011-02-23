@@ -84,7 +84,7 @@ class DanceDiagram < Processing::App
 				if reading
 					puts "hour #{hour} => #{reading[:wind_speed]}, #{reading[:wind_direction]}"
 				else
-					puts "!!! No reading for hour #{hour} !!!"
+					puts "!!! No reading for #{date}, hour #{hour} !!!"
 				end
 				previous_barb = WindBarb.new(reading[:wind_speed], reading[:wind_direction], previous_barb)
 				barbs << previous_barb
@@ -140,7 +140,7 @@ class DanceDiagram < Processing::App
 			# Only move if we are past the first step
 			if index > 0
 				move_distance = barb.speed==0 ? 0 : barb.speed*STEP_MULTIPLIER+EXTRA_MOVE_CONST
-				puts "barb.speed=#{barb.speed}, move_distance=#{move_distance}"
+				# puts "barb.speed=#{barb.speed}, move_distance=#{move_distance}"
 				delta_x = move_distance * Math.cos(barb.direction_in_radians)
 				delta_y = move_distance * Math.sin(barb.direction_in_radians)
 				new_x += delta_x
@@ -167,6 +167,7 @@ class DanceDiagram < Processing::App
 
 			# Render the barb
 			barb.render
+			puts "rendering barb at #{barb.pos.x}, #{barb.pos.y}"
 			
 			@current_pos.set(barb.pos.x, barb.pos.y)
 		end
