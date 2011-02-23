@@ -1,0 +1,63 @@
+#page_side { position: relative; width: 290px; height: 2170px; z-index: 0; }
+#map { position: relative; height: 100%; border-top: 1px solid #008; border-left: 1px solid #008; border-right: 1px solid #7B7DC6; border-bottom: 1px solid #7B7DC6; z-index: 0; }
+
+DIV.gap1 { height: 1px; line-height: 1px; }
+DIV.gap { height: 5px; line-height: 5px; }
+TR.groupTitle TD { font-weight: bold; background-color: #FFF5CD; }
+TR.groupTitle:hover TD { background-color: #FFF5CD; }
+TD.indent SPAN { margin-left: 20px; }
+
+.selectorBox { background-color: #F5F5F5; border-top: 1px solid #CCC; }
+
+.dateTable SPAN { margin: 0 10px 0 10px; white-space: nowrap; }
+.dateTable TD { vertical-align: middle; padding: 1px; }
+.dateTable A { color: #172C6C; display: block; width: 100px; margin: 2px; text-align: center; }
+
+#typeTable { margin-top: 10px; }
+#typeTable TD { width: 20%; text-align: center; padding: 2px; }
+#typeTable TD.activeTab { color: #000; border-top: 1px solid #9A8221; border-right: 1px solid #9A8221; border-left: 1px solid #9A8221; font-weight: bold; background: #FFF url(http://icons.wunderground.com/graphics/wu2/brown_gradient.gif) repeat-x top; font-size: 13px; }
+#typeTable TD.inactiveTab { border-bottom: 1px solid #9A8221; }
+#typeTable TD.inactiveTab A { color: #6C3917; }
+
+#calTable { width: 100%; border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-bottom: 10px; }
+#calTable THEAD TR TD { background-color: #FFF; font-weight: bold; text-align: center; padding-top: 10px; padding-bottom: 2px; border-bottom: 1px solid #CCC; color: #000; font-size: 14px; }
+#calTable TBODY TR TD { padding: 2px; }
+#calTable TBODY TR TD A { font-size: 18px; }
+
+.obsTitle { padding: 2px; background-color: #F5F5F5; border-bottom: 1px solid #CCC; font-weight: bold; }
+.obsTable THEAD TR TD { background-color: #CDD9FF; border-top: 5px solid #FFF; padding: 2px; }
+.obsTable TBODY TR TD.bl { border-left: 1px solid #CCC; }
+.obsTable TBODY TR TD.br { border-right: 1px solid #CCC; }
+.obsTable TBODY TR TD.gb { background-color: #F5F5F5; }
+.obsTable TBODY TR:hover TD { background-color: #FFC; }
+
+#graph { margin-top: 10px; text-align: center; }
+
+#tripPick { width: 296px; margin: 5px auto 0 auto; }
+#tripPick TD { vertical-align: middle; }
+#tripPick .tripText DIV { width: 50px; text-align: right; }
+#tripPick .tripField { width: 100%; }
+
+#tripIcons { width: 100%; border-top: 1px dotted #CCC; margin-top: 10px; background-color: #F5F5F5; }
+#tripIcons TR TD { color: #666; font-size: 16px; padding: 5px; }
+#tripIcons TR TD { color: #666; font-size: 16px; padding: 5px; }
+#tripIcons TR TD.iconText { width: 25%; }
+#tripIcons TR TD IMG { border-top: 1px solid #333; border-right: 1px solid #999; border-bottom: 1px solid #999; border-left: 1px solid #333; }
+
+#placePick { width: 296px; margin: 5px auto 0 auto; }
+#placePick TD { vertical-align: middle; }
+#placePick .placeText DIV { width: 50px; text-align: right; }
+#placePick .placeField { width: 100%; }
+#placePick .placeField SELECT { width: 200px; }
+
+#radarArchive IMG { border: 1px solid #172C6C; }
+#radarArchive A { color: #213F9A; }
+#radarImage { margin: 5px; text-align: center; width: 640px; height: 480px; background: url(http://icons.wunderground.com/graphics/wu2/loading_ani.gif) no-repeat center; }
+
+#localPhotos IMG { border: 1px solid #172C6C; }
+#localPhotos A { color: #213F9A; }
+
+#astroTable { width: 296px; margin: 0 auto 0 auto; }
+#astroTable THEAD TD { font-weight: normal; padding: 2px; }
+#astroTable TBODY TD { padding: 3px; border-top: 1px dotted #CCC; }
+#moonTable { width: 296px; margin: 0 auto 0 auto; }
