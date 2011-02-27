@@ -16,7 +16,7 @@ year = 2010
 
 			
 		url = "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=KMAACTON4&month=#{month}&day=#{day}&year=#{year}&format=1"
-		output_file = "#{i}.csv"
+		output_file = "individual_days/#{i}.csv"
 		puts url
 		csv = RestClient.get url
 		if csv.length > 193
