@@ -190,7 +190,7 @@ class DanceDiagram < Processing::App
 end
 
 
-# Run like: rp5 run dance_diagram.rb DanceDiagram 700 700 01.08.2009 data/spws-data-flux-809-data_only.csv test_diagram
+# Run like: rp5 run dance_diagram.rp5 DanceDiagram 700 700 01.08.2009 data/spws-data-flux-809-data_only.csv test_diagram
 title = ARGV[0].to_s
 width = ARGV[1].to_i
 height = ARGV[2].to_i

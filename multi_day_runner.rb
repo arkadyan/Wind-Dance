@@ -40,4 +40,4 @@ else
 end
 
 size = 4000
-puts `rp5 run dance_diagram.rb DanceDiagram #{size} #{size} #{dates} data/spws-data-flux-809-data_only.csv 1-31.08.2009 #{starting_offset_x} #{starting_offset_y} 0 23`
+puts `rp5 run dance_diagram.rp5 DanceDiagram #{size} #{size} #{dates} data/spws-data-flux-809-data_only.csv 1-31.08.2009 #{starting_offset_x} #{starting_offset_y} 0 23`
