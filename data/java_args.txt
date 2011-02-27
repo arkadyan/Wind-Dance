@@ -1,1 +1,1 @@
--Xms528m -Xmx1024m
+-Xms528m -Xmx4096m
