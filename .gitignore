@@ -1,2 +1,7 @@
 .DS_Store
 test_diagram.tif
+.actionScriptProperties
+.flexProperties
+.project
+.settings/*
+bin-debug/*
