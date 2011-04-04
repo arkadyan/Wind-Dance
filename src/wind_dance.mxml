@@ -8,6 +8,9 @@
 	<mx:Script>
 		<![CDATA[
 			
+			private var inputFile:String;
+			
+			
 			private function init():void {
 				setDataGridColumns();
 			}
@@ -30,13 +33,16 @@
 					filePickerErrorsText.text = "Please select a file";
 					filePickerErrorsView.visible = true;
 				} else {
-					// TODO: Load the file.
+					var file:File = File.documentsDirectory.resolvePath(selectedPath);
+					var inputFileStream:FileStream = new FileStream();
+					inputFileStream.open(file, FileMode.READ);
+					var fileContents:String = inputFileStream.readMultiByte(inputFileStream.bytesAvailable, "iso-8859-1");
+					
+					inputFile = fileContents;
+					mx.controls.Alert.show(inputFile);
 					
 					filePickerView.visible = false;
 				}
-				
-				
-				
 			}
 			
 		]]>
@@ -94,9 +100,13 @@
 				directory="{File.userDirectory}"/>
 		</mx:HDividedBox>
 		
-		<mx:Button id="openFileButton" 
-			label="Open File" 
-			click="loadInputFile(dataGrid.selectedPath)"/>
+		<mx:HBox width="100%" horizontalAlign="right">
+		
+			<mx:Button id="openFileButton" 
+					label="Open File" 
+					click="loadInputFile(dataGrid.selectedPath)"/>
+					
+		</mx:HBox>
 			
 	</mx:VBox>
 	
