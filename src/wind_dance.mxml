@@ -7,12 +7,59 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.logging.ILogger;
+			
+			import com.littlesecretsrecords.data.WeatherDataImporter;
+			
+			
+			private static const TERMINAL_CIRCLE_WIDTH:int = 15;
+			private static const TERMINAL_CIRCLE_WEIGHT:int = 1;
+			private static const TERMINAL_CIRCLE_COLOR:int = 50;
+			
+			private static const COMPASS_STROKE_COLOR:int = 0;
+			private static const CARDINAL_LENGTH:int = 10;
+			private static const CARDINAL_WEIGHT:int = 4;
+			private static const INTERMEDIATE_LENGTH:int = 7;
+			private static const INTERMEDIATE_WEIGHT:int = 2;
+			private static const MINOR_LENGTH:int = 4;
+			private static const MINOR_WEIGHT:int = 1;
+			
+			private static const STEP_MULTIPLIER:Number = 2.5;
+			private static const EXTRA_MOVE_CONST:int = 190;
+			private static const MOVE_FROM_LAST_STEP_DISTANCE:int = 250;
+			
 			
 			private var inputFile:String;
+			private var date:String;
+			private var startingOffsetX:int;
+			private var startingOffsetY:int;
+			private var firstHour:int;
+			private var lastHour:int;
+			private var center:Number;
+			private var currentPos:Point;
+			private var barbs:Array;
 			
 			
 			private function init():void {
 				setDataGridColumns();
+				
+				date = '01.08.2009';
+				startingOffsetX = 0;
+				startingOffsetY = 0;
+				firstHour = 0;
+				lastHour = 23;
+				
+				center = canvas.width / 2;
+				
+				// Start in the center if no offset is defined
+				if (startingOffsetX == 0) {
+					startingOffsetX = center;
+				}
+				if (startingOffsetY == 0) {
+					startingOffsetY = center;
+				}
+				
+				currentPos = new Point(startingOffsetX, startingOffsetY);
 			}
 			
 			private function setDataGridColumns():void {
@@ -37,11 +84,21 @@
 					var inputFileStream:FileStream = new FileStream();
 					inputFileStream.open(file, FileMode.READ);
 					var fileContents:String = inputFileStream.readMultiByte(inputFileStream.bytesAvailable, "iso-8859-1");
-					
 					inputFile = fileContents;
-					mx.controls.Alert.show(inputFile);
 					
 					filePickerView.visible = false;
+					
+					loadData();
+				}
+			}
+			
+			private function loadData():void {
+				var previousBarb = null;
+				
+				// Pull readings for each hour in the data using the WeatherDataImporter
+				barbs = new Array();
+				for (var hour:int=firstHour; hour<=lastHour; hour++) {
+					var reading:String = WeatherDataImporter.pullDataForDateHour(inputFile, date, hour);
 				}
 			}
 			
