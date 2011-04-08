@@ -1,5 +1,8 @@
-package com.littlesecretsrecords.data
+package com.littlesecretsrecords.util
 {
+	import com.littlesecretsrecords.model.Reading;
+	
+	
 	public class WeatherDataImporter
 	{
 		
@@ -21,15 +24,41 @@ package com.littlesecretsrecords.data
 		private static const SOFTWARE_TYPE:int = 14
 		
 		
-		public static function pullDataForDateHour(inputFile:String, date:int, hour:int):String {
+		public static function pullDataForDateHour(inputFile:String, date:String, hour:int):Reading {
 			var hourReadings:Array = new Array();
 			
+			for each (var line:String in inputFile.split('\n')) {
+				var readings:Array = line.split(',');
+				var currentHour:String = readings[TIME].split(':')[0];
+				if (readings[DATE] == date && (currentHour==hour.toString() || currentHour=='0'+hour.toString())) {
+					hourReadings = hourReadings.concat(new Reading(readings[DATE], readings[TIME], readings[WIND_SPEED], readings[WIND_DIRECTION]));
+				}
+			}
 			
+			//return getFirstReading(hourReadings);
+			//return getRandomReading(hourReadings);
+			return getStrongestReading(hourReadings);
 		}
 		
 		
-		private function getFirstReading(readings) {
+		private static function getFirstReading(readings:Array):Reading {
+			return readings[0];
+		}
+		
+		private static function getRandomReading(readings:Array):Reading {
+			return readings[Math.floor(Math.random()*readings.length)];
+		}
+		
+		private static function getStrongestReading(readings:Array):Reading {
+			var strongestReading:Reading = readings[0];
 			
+			for each (var reading:Reading in readings) {
+				if (reading.windSpeed > strongestReading.windSpeed) {
+					strongestReading = reading;
+				}
+			}
+			
+			return strongestReading;
 		}
 
 	}
