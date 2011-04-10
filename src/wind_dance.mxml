@@ -9,7 +9,8 @@
 		<![CDATA[
 			import mx.logging.ILogger;
 			
-			import com.littlesecretsrecords.data.WeatherDataImporter;
+			import com.littlesecretsrecords.util.WeatherDataImporter;
+			import com.littlesecretsrecords.model.Reading;
 			
 			
 			private static const TERMINAL_CIRCLE_WIDTH:int = 15;
@@ -43,7 +44,7 @@
 			private function init():void {
 				setDataGridColumns();
 				
-				date = '01.08.2009';
+				date = '2010-01-01';
 				startingOffsetX = 0;
 				startingOffsetY = 0;
 				firstHour = 0;
@@ -93,12 +94,12 @@
 			}
 			
 			private function loadData():void {
-				var previousBarb = null;
+//				var previousBarb = null;
 				
 				// Pull readings for each hour in the data using the WeatherDataImporter
 				barbs = new Array();
 				for (var hour:int=firstHour; hour<=lastHour; hour++) {
-					var reading:String = WeatherDataImporter.pullDataForDateHour(inputFile, date, hour);
+					var reading:Reading = WeatherDataImporter.pullDataForDateHour(inputFile, date, hour);
 				}
 			}
 			
