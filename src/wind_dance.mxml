@@ -14,19 +14,12 @@
 			import com.littlesecretsrecords.util.WeatherDataImporter;
 			import com.littlesecretsrecords.model.Reading;
 			import com.littlesecretsrecords.drawing.WindBarb;
+			import com.littlesecretsrecords.drawing.CompassPoints;
 			
 			
 			private static const TERMINAL_CIRCLE_WIDTH:int = 15;
 			private static const TERMINAL_CIRCLE_WEIGHT:int = 1;
 			private static const TERMINAL_CIRCLE_COLOR:int = 50;
-			
-			private static const COMPASS_STROKE_COLOR:int = 0;
-			private static const CARDINAL_LENGTH:int = 10;
-			private static const CARDINAL_WEIGHT:int = 4;
-			private static const INTERMEDIATE_LENGTH:int = 7;
-			private static const INTERMEDIATE_WEIGHT:int = 2;
-			private static const MINOR_LENGTH:int = 4;
-			private static const MINOR_WEIGHT:int = 1;
 			
 			private static const STEP_MULTIPLIER:Number = 2.5;
 			private static const EXTRA_MOVE_CONST:int = 190;
@@ -99,6 +92,7 @@
 					hideFilePickerView();
 					
 					barbs = loadData();
+					draw();
 				}
 			}
 			
@@ -123,6 +117,14 @@
 				}
 				
 				return barbs;
+			}
+			
+			private function draw():void {
+				var compass:CompassPoints = new CompassPoints(canvas.width, canvas.height);
+				canvas.addChild(compass);
+				
+//				render_barbs
+//				save_image
 			}
 			
 		]]>
