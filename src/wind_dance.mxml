@@ -7,10 +7,13 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.logging.Log;
+			import mx.controls.Alert;
 			import mx.logging.ILogger;
 			
 			import com.littlesecretsrecords.util.WeatherDataImporter;
 			import com.littlesecretsrecords.model.Reading;
+			import com.littlesecretsrecords.drawing.WindBarb;
 			
 			
 			private static const TERMINAL_CIRCLE_WIDTH:int = 15;
@@ -29,6 +32,8 @@
 			private static const EXTRA_MOVE_CONST:int = 190;
 			private static const MOVE_FROM_LAST_STEP_DISTANCE:int = 250;
 			
+			
+			private var logger:ILogger = Log.getLogger("wind_dance");
 			
 			private var inputFile:String;
 			private var date:String;
@@ -72,6 +77,10 @@
 				filePickerView.visible = true;
 			}
 			
+			private function cancelInputFileLoad():void {
+				hideFilePickerView();
+			}
+			
 			private function loadInputFile(selectedPath:String):void {
 				// Hide any old error messages				
 				filePickerErrorsView.visible = false;
@@ -87,20 +96,33 @@
 					var fileContents:String = inputFileStream.readMultiByte(inputFileStream.bytesAvailable, "iso-8859-1");
 					inputFile = fileContents;
 					
-					filePickerView.visible = false;
+					hideFilePickerView();
 					
 					loadData();
 				}
 			}
 			
-			private function loadData():void {
-//				var previousBarb = null;
+			private function hideFilePickerView():void {
+				filePickerView.visible = false;
+			}
+			
+			private function loadData():Array {
+				var previousBarb:WindBarb;
 				
 				// Pull readings for each hour in the data using the WeatherDataImporter
 				barbs = new Array();
 				for (var hour:int=firstHour; hour<=lastHour; hour++) {
 					var reading:Reading = WeatherDataImporter.pullDataForDateHour(inputFile, date, hour);
+					if (reading) {
+						logger.info("hour " + hour + " => " + reading.windSpeed + ", " + reading.windDirection);
+					} else {
+						Alert.show("Problem with the data: No reading for " + date + ", hour " + hour);
+					}
+					previousBarb = new WindBarb(new Point(canvas.width/2, canvas.height/2), reading.windSpeed, reading.windDirection, previousBarb);
+					barbs.push(previousBarb);
 				}
+				
+				return barbs;
 			}
 			
 		]]>
@@ -160,6 +182,8 @@
 		
 		<mx:HBox width="100%" horizontalAlign="right">
 		
+			<mx:Button label="Cancel"
+					click="cancelInputFileLoad()"/>
 			<mx:Button id="openFileButton" 
 					label="Open File" 
 					click="loadInputFile(dataGrid.selectedPath)"/>
