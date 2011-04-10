@@ -23,19 +23,18 @@ package com.littlesecretsrecords.drawing
 		private static const ARROW_DOT_SEPARATION:int = 4;
 		
 		
+		private var _pos:Point;
 		private var _speed:Number;
 		private var _direction:String;
-		private var _pos:Point;
 		private var _previousBarb:WindBarb;
 		private var _lastCalmBarb:Boolean;
 		
 		
-		public function WindBarb(initalSpeed:Number, initialDirection:String, initialPreviousBarb:WindBarb)
+		public function WindBarb(initialPos:Point, initalSpeed:Number, initialDirection:String, initialPreviousBarb:WindBarb)
 		{
 			super();
 			
-			//@pos = Point.new(width/2, height/2)
-			
+			pos = initialPos;
 			speed = initalSpeed;
 			direction = initialDirection;
 			previousBarb = initialPreviousBarb;
@@ -43,6 +42,13 @@ package com.littlesecretsrecords.drawing
 			lastCalmBarb = false;
 		}
 		
+		
+		public function get pos():Point {
+			return _pos;
+		}
+		public function set pos(newPos:Point):void {
+			_pos = newPos;
+		}
 		
 		public function get speed():Number {
 			return _speed;
@@ -56,13 +62,6 @@ package com.littlesecretsrecords.drawing
 		}
 		public function set direction(newDirection:String):void {
 			_direction = newDirection;
-		}
-		
-		public function get pos():Point {
-			return _pos;
-		}
-		public function set pos(newPos:Point):void {
-			_pos = newPos;
 		}
 		
 		public function get previousBarb():WindBarb {
