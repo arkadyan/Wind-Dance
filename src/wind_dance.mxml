@@ -7,6 +7,9 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.printing.FlexPrintJobScaleType;
+			import mx.printing.FlexPrintJob;
+			import mx.core.UIComponent;
 			import mx.logging.Log;
 			import mx.controls.Alert;
 			import mx.logging.ILogger;
@@ -19,7 +22,7 @@
 			
 			private static const TERMINAL_CIRCLE_WIDTH:int = 15;
 			private static const TERMINAL_CIRCLE_WEIGHT:int = 1;
-			private static const TERMINAL_CIRCLE_COLOR:int = 50;
+			private static const TERMINAL_CIRCLE_COLOR:int = 0x333333;
 			
 			private static const STEP_MULTIPLIER:Number = 2.5;
 			private static const EXTRA_MOVE_CONST:int = 190;
@@ -123,8 +126,37 @@
 				var compass:CompassPoints = new CompassPoints(canvas.width, canvas.height);
 				canvas.addChild(compass);
 				
-//				render_barbs
+				renderBarbs();
+
 //				save_image
+			}
+			
+			private function renderBarbs():void {
+				// Render the starting terminal circle if it's a calm step
+				if ((barbs[0] as WindBarb).speed == 0) {
+					renderTerminalCircle(currentPos);
+				}
+			}
+			
+			private function renderTerminalCircle(pos:Point):void {
+				var circle:UIComponent = new UIComponent();
+				
+				circle.graphics.clear();
+				circle.graphics.lineStyle(TERMINAL_CIRCLE_WEIGHT, TERMINAL_CIRCLE_COLOR, 1);
+				circle.graphics.beginFill(0xFFFFFF, 0);
+				circle.graphics.drawCircle(pos.x, pos.y, TERMINAL_CIRCLE_WIDTH);
+				circle.graphics.endFill();
+				
+				canvas.addChild(circle);
+			}
+			
+			private function printCanvas():void {
+				var printJob:FlexPrintJob = new FlexPrintJob();
+				printJob.printAsBitmap = false;
+				if (!printJob.start()) return;
+				
+				printJob.addObject(canvas, FlexPrintJobScaleType.SHOW_ALL);
+				printJob.send();
 			}
 			
 		]]>
@@ -148,7 +180,8 @@
 			<mx:Button label="Load File" 
 					click="displayFilePicker()"/>
 			
-			<mx:Button label="Print"/>
+			<mx:Button label="Print" 
+					click="printCanvas()"/>
 			
 		</mx:HBox>
 		
