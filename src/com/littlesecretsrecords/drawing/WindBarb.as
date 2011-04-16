@@ -78,5 +78,62 @@ package com.littlesecretsrecords.drawing
 			_lastCalmBarb = newLastCalmBarb;
 		}
 		
+		
+		public function get directionInRadians():Number {
+			switch (direction) {
+				case 'E':
+					return 0;
+					break;
+				case 'ENE':
+					return -Math.PI/8;
+					break;
+				case 'NE':
+					return -Math.PI/4;
+					break;
+				case 'NNE':
+					return -Math.PI*3/8;
+					break;
+				case 'N':
+					return -Math.PI/2;
+					break;
+				case 'NNW':
+					return -Math.PI*5/8;
+					break;
+				case 'NW':
+					return -Math.PI*3/4;
+					break;
+				case 'WNW':
+					return -Math.PI*7/8;
+					break;
+				case 'W':
+					return -Math.PI;
+					break;
+				case 'WSW':
+					return -Math.PI*9/8;
+					break;
+				case 'SW':
+					return -Math.PI*5/4;
+					break;
+				case 'SSW':
+					return -Math.PI*11/8;
+					break;
+				case 'S':
+					return -Math.PI*3/2;
+					break;
+				case 'SSE':
+					return -Math.PI*13/8;
+					break;
+				case 'SE':
+					return -Math.PI*7/4;
+					break;
+				case 'ESE':
+					return -Math.PI*15/8;
+					break;
+				default:
+					return 0;
+					break;
+			}
+		}
+		
 	}
 }
