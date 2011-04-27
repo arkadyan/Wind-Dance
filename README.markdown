@@ -15,3 +15,16 @@ Wind Dance is currently written in [Ruby-Processing](https://github.com/jashkena
 ### Requirements
 
 Wand Dance requires Ruby-Processing to run. Instructions for downloading and installing Ruby-Processing can be found on [their wiki](https://github.com/jashkenas/ruby-processing/wiki).
+
+
+### Running Wind Dance
+
+From the terminal while within side the Wind Dance directory, you'll generate an image by running a command in this format:
+
+    rp5 run dance_diagram.rp5 <image width> <image height> <date to plot> <path to the csv data file>
+
+Image width and height are the dimensions of the tif file that will be produced. The date should be formatted like YYYY-MM-DD, and at least one measurement for each hour of this day should be found in the data file.
+
+Here is a complete example:
+
+    rp5 run dance_diagram.rp5 8000 8000 2010-01-01 ~/data/weather_data.csv
