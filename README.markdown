@@ -19,7 +19,7 @@ Wand Dance requires Ruby-Processing to run. Instructions for downloading and ins
 
 ### Running Wind Dance
 
-From the terminal while within side the Wind Dance directory, you'll generate an image by running a command in this format:
+From the terminal while inside the Wind Dance directory, you'll generate an image by running a command in this format:
 
     rp5 run dance_diagram.rp5 <image width> <image height> <date to plot> <path to the csv data file>
 
