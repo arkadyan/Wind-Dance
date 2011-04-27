@@ -35,9 +35,9 @@ class DanceDiagram < Processing::App
 		@starting_offset_x = @starting_offset_x.to_i
 		@starting_offset_y = options[:starting_offset_y] || '0'
 		@starting_offset_y = @starting_offset_y.to_i
-		@first_hour = options[:first_hour] || '0'
+		@first_hour = !options[:first_hour].empty? ? options[:first_hour] : '0'
 		@first_hour = @first_hour.to_i
-		@last_hour = options[:last_hour] || '23'
+	  @last_hour = !options[:last_hour].empty? ? options[:last_hour] : '23'
 		@last_hour = @last_hour.to_i
 		@days_per_diagram = options[:days_per_diagram] || '1'
 		@days_per_diagram = @days_per_diagram.to_i
