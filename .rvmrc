@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rvm --create jruby-1.5.5@wind_dance_master
+
+if [[ -s wind_dance_master.gems ]] ; then
+  rvm gemset import wind_dance_master.gems
+fi
